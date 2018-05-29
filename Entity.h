@@ -15,12 +15,16 @@ public:
     //Physical Object
     sf::RectangleShape rect;
     sf::Sprite sprite;
+    sf::Texture texture;
     sf::Text text;
 
-    bool active=false;
+    // FIXME rendere astratta con distruttore puramente virtuale (vedi lucidi su polimorfismo)
+    //virtual ~Entity() = 0;
+
+    /*bool active=false;
     bool deleteit=false;
     int x=0;
-    int y=0;
+    int y=0;*/
 };
 
 

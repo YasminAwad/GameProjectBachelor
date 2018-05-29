@@ -20,3 +20,5 @@ void TextDisplay::update() {
         destroy=true;
     }
 }
+
+//TextDisplay::~TextDisplay() {}

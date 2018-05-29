@@ -13,17 +13,13 @@
 class Character: public Entity {
 public:
     int damage;
-    int level;
-    int hp=50;
-
-    Character (int posx, int posy, int damage, int level, int hp);
-    Character(){} //costruttore di default
-    virtual ~Character(){} //distruttore
-
-
+    int hp;
     int posx;
     int posy;
 
+    Character (int posx, int posy, int damage, int hp);
+    Character(){} //costruttore di default
+    virtual ~Character()=0;
 };
 
 

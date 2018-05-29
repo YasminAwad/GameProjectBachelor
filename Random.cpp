@@ -12,7 +12,7 @@ int Random::generateRandom(int max) {
     return myRandom;
 }
 
-int generateRandom0(int max) {
+int Random::generateRandom0(int max) {
     int randomNumber=rand();
     float random=(randomNumber%max);
     int myRandom=random;
@@ -20,7 +20,7 @@ int generateRandom0(int max) {
     return myRandom;
 }
 
-bool generateRandomBool() {
+bool Random::generateRandomBool() {
     int randomNumber=rand();
     float myRandom=(randomNumber%2)+1;
     if(myRandom==1)

@@ -21,6 +21,7 @@ public:
     int lifetime=100;
 
     TextDisplay();
+    virtual ~TextDisplay(){}
     void update();
 
 };

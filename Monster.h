@@ -7,8 +7,7 @@
 
 #include "Random.h"
 #include "Character.h"
-
-enum class Monsters {snake, spider, idra};
+#include "Enumeration.h"
 
 class Monster: public Character {
 public:
@@ -16,24 +15,23 @@ public:
     int movementSpeed=1;
     int attackDamage=5;
     int counterWalking=0;
-    int direction=0; // 1-u, 2-down ...
-    sf::Texture textureMonster;
+    Direction direction;
     int counter=0;
     int movementLenght=200;
+
     bool alive=true;
+    bool canMoveUp=true;
+    bool canMoveDown=true;
+    bool canMoveLeft=true;
+    bool canMoveRight=true;
 
-    Monster(int posx, int posy, int damage, int level, int hp, Monsters monsterClass);
+    Monster(int posx, int posy, int damage, int hp,  Monsters monsterClass);
     Monster();
+    virtual ~Monster(){}
 
-    //distruttore??
-
-    void monsterAttack (Monster *enemy);
     void update();
     void updateMovement();
     int loadTexture();
-    void generateMonster();
-
-
 };
 
 

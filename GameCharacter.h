@@ -6,29 +6,37 @@
 #define GAME_PROVA3_GAMECHARACTER_H
 
 #include "Character.h"
+#include "Enumeration.h"
+#include <string>
 
-
-enum class GCharacters {boy=0, girl};
-//enum class Objects {magic=0, potion, food, key};
+using std::string;
 
 class GameCharacter : public Character {
 public:
 
-    int maxHP;
-    int direction=0; // 1-up, 2-down, 3-left, 4-rigth
-    float movementSpeed=3;
+    int maxHP=50;
+    Direction direction;
+    float movementSpeed=6;
     int counterWalking=0;
     GCharacters gameCharacter;
-    char name[15];
-    sf::Texture textureCharacter;
+    string name="name";
+    int gil=0;
+    bool powerUpLevel=false;
+    bool novaAttack=false;
 
+    bool canMoveUp=true;
+    bool canMoveDown=true;
+    bool canMoveLeft=true;
+    bool canMoveRight=true;
 
     void update();
-    void updateMovement();
+    void updateMovement(Direction direction1);
     int loadTexture();
-    void setCharacter();
 
-    GameCharacter(int posx, int posy, int damage, int level, int hp, int maxHP, GCharacters gameCharacter);
+    GameCharacter(int posx, int posy, int damage, int hp, GCharacters gameCharacter);
+    GameCharacter(){}
+
+    virtual ~GameCharacter(){}
 
 };
 

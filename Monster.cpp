@@ -4,24 +4,37 @@
 
 #include "Monster.h"
 
-Monster::Monster(int posx, int posy, int damage, int level, int hp, Monsters monsterClass)
-        :Character(posx, posy, damage, level, hp),
-         monsterClass(monsterClass){
-
-    sprite.setTextureRect(sf::IntRect(0,0,32,32));
-
+Monster::Monster(int posx, int posy, int damage, int hp,  Monsters monsterClass):
+        Character(posx, posy, damage, hp), monsterClass(monsterClass){
+    hp=3;
+    rect.setSize(sf::Vector2f(32,32));
+    rect.setPosition(posx, posy);
+    //Random::generateRandom(1000)
+    switch(monsterClass){
+        case Monsters::bat:
+            sprite.setTexture(texture);
+            sprite.setTextureRect(sf::IntRect(0,0,32,32));
+            break;
+        case Monsters ::rat:
+            sprite.setTexture(texture);
+            sprite.setTextureRect(sf::IntRect(0,4*32,32,32));
+            break;
+        case Monsters ::boss:
+            break;
+    }
 }
 
 Monster::Monster() {
+    hp=3;
     rect.setSize(sf::Vector2f(32,32));
-    rect.setPosition(posx, posy);
+    rect.setPosition(Random::generateRandom(1000), Random::generateRandom(1000));
 
-    sprite.setTexture(textureMonster);
+    sprite.setTexture(texture);
     sprite.setTextureRect(sf::IntRect(0,0,32,32));
 }
 
 int Monster::loadTexture() {
-    if(!textureMonster.loadFromFile("../RisorseSprite/monster2.png")){
+    if(!texture.loadFromFile("../RisorseSprite/monster2.png")){
         return EXIT_FAILURE;
     }
 }
@@ -29,34 +42,86 @@ int Monster::loadTexture() {
 
 void Monster ::update() {
     sprite.setPosition(rect.getPosition());
+    text.setPosition(rect.getPosition().x - rect.getSize().x/2, rect.getPosition().y - rect.getSize().y/2 + 5);
 }
 
 void Monster::updateMovement() {
 
     //direction = Random::generateRandom(4);
 
-    if (direction == 1) { //up
-        rect.move(0, -movementSpeed);
-        sprite.setTextureRect(sf::IntRect(counterWalking * 32, 32*3, 32, 32));
-    } else {
-        if (direction == 2) { //down
-            rect.move(0, movementSpeed);
-            sprite.setTextureRect(sf::IntRect(counterWalking * 32, 0, 32, 32));
-        } else {
-            if (direction == 3) { //left
-                rect.move(-movementSpeed, 0);
-                sprite.setTextureRect(sf::IntRect(counterWalking * 32, 32, 32, 32));
-            } else {
-                if (direction == 4) { //right
-                    rect.move(movementSpeed, 0);
-                    sprite.setTextureRect(sf::IntRect(counterWalking * 32, 32*2, 32, 32));
-                } else {
-                    //no movement
-                }
+    if (direction == Direction::up) {
+        if (canMoveUp == true) {
+            rect.move(0, -movementSpeed);
+            switch(monsterClass){
+                case Monsters ::bat:
+                    sprite.setTextureRect(sf::IntRect(counterWalking * 32, 32 * 3, 32, 32));
+                    break;
+                case Monsters ::rat:
+                    sprite.setTextureRect(sf::IntRect(counterWalking * 32, 32 * 7, 32, 32));
+                    break;
             }
+
+            canMoveUp = true;
+            canMoveDown = true;
+            canMoveLeft = true;
+            canMoveRight = true;
         }
     }
+    else if (direction == Direction::down) {
+        if (canMoveDown == true) {
+            rect.move(0, movementSpeed);
+            switch(monsterClass){
+                case Monsters ::bat:
+                    sprite.setTextureRect(sf::IntRect(counterWalking * 32, 0, 32, 32));
+                    break;
+                case Monsters ::rat:
+                    sprite.setTextureRect(sf::IntRect(counterWalking * 32, 32 * 4, 32, 32));
+                    break;
+            }
 
+            canMoveUp = true;
+            canMoveDown = true;
+            canMoveLeft = true;
+            canMoveRight = true;
+        }
+    }
+    else if (direction == Direction::left) {
+        if (canMoveLeft == true) {
+            rect.move(-movementSpeed, 0);
+            switch(monsterClass){
+                case Monsters ::bat:
+                    sprite.setTextureRect(sf::IntRect(counterWalking * 32, 32, 32, 32));
+                    break;
+                case Monsters ::rat:
+                    sprite.setTextureRect(sf::IntRect(counterWalking * 32, 32 * 5, 32, 32));
+                    break;
+            }
+
+            canMoveUp = true;
+            canMoveDown = true;
+            canMoveLeft = true;
+            canMoveRight = true;
+        }
+    }
+    else if (direction == Direction::right) {
+        if (canMoveRight == true) {
+            rect.move(movementSpeed, 0);
+            switch(monsterClass){
+                case Monsters ::bat:
+                    sprite.setTextureRect(sf::IntRect(counterWalking * 32, 32 * 2, 32, 32));
+                    break;
+                case Monsters ::rat:
+                    sprite.setTextureRect(sf::IntRect(counterWalking * 32, 32 * 6, 32, 32));
+                    break;
+            }
+
+            canMoveUp = true;
+            canMoveDown = true;
+            canMoveLeft = true;
+            canMoveRight = true;
+        }
+    }
+    else {} //no movement
 
     counterWalking++;
     if(counterWalking==2){
@@ -64,42 +129,44 @@ void Monster::updateMovement() {
     }
 
     counter++;
-    if(counter>=movementLenght){
-        counter=0;
-        direction=Random::generateRandom(10);
+    if(counter>=movementLenght) {
+        counter = 0;
+        int myRandom = Random::generateRandom(10);
+        switch(myRandom){
+            case 1:
+                direction = Direction::up;
+                break;
+            case 2:
+                direction = Direction::down;
+                break;
+            case 3:
+                direction = Direction::left;
+                break;
+            case 4:
+                direction = Direction::right;
+                break;
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+                direction = Direction::null;
+                break;
+
+        }
     }
-
-
 }
 
+//Monster::~Monster() {}
 
-
-/*
-void Monster::monsterAttack(Monster *enemy) {
-    switch (monsterClass){
-        case Monsters::snake : //snape: attacco ravvicinato
-            if(posx==enemy->posx){
-                enemy->attack(enemy);
-            }
-            break;
-
-        case Monsters::spider : //spider: attacco ravvicinato
-            if((abs(enemy->posx - posx) < 30) && (abs(enemy->posy - posy) < 30)) { // se è ad una certa distanza (cerchio)
-                //attacco a distanza:
-                //sprite per sparare
-                enemy->attack(enemy);
-            }
-            break;
-
-        case Monsters::idra : //idra: attacco ravvicinato e a distanza
-            if((abs(enemy->posx - posx) < 30) && (abs(enemy->posy - posy) < 30)) { // se è ad una certa distanza (cerchio)
-                //attacco a distanza:
-                //sprite per sparare
-                enemy->attack(enemy);
-            }
-            else if (posx==enemy->posx){
-                enemy->attack(enemy);
-            }
-            break;
-    }
-}*/
+/* if (myRandom == 1)
+            direction = Direction::up;
+        else if (myRandom == 2)
+            direction = Direction::down;
+        else if (myRandom == 3)
+            direction = Direction::left;
+        else if (myRandom == 4)
+            direction = Direction::right;
+        else
+            direction == Direction::null;*/
