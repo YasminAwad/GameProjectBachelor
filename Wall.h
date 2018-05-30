@@ -7,15 +7,18 @@
 
 
 #include "Entity.h"
+#include "Enumeration.h"
 
 class Wall: public Entity {
 public:
     bool destructible= false;
     bool destroy=false;
     int hp=5;
+    WallTexture textureChoice;
 
-    Wall();
+    Wall(WallTexture textureChoice);
     virtual ~Wall(){}
+
     int loadTexture();
     void update();
 

@@ -8,11 +8,11 @@
 
 enum class GCharacters {boy=0, girl};
 
-enum class Objects {magic=0, potion, food, key};
-
 enum class Direction {up=1, down, left, right, null};
 
 enum class Monsters {bat, rat, boss};
+
+enum class WallTexture {tree, flower};
 
 
 

@@ -15,6 +15,7 @@ class CustomWall {
     int rectSizeY=460;
 
     CustomWall(int wallSize, int roomStartX, int roomStartY);
+    ~CustomWall(){}
 };
 
 

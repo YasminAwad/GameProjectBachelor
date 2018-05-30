@@ -19,7 +19,7 @@ public:
     sf::Text text;
 
     // FIXME rendere astratta con distruttore puramente virtuale (vedi lucidi su polimorfismo)
-    //virtual ~Entity() = 0;
+    virtual ~Entity() = 0;
 
     /*bool active=false;
     bool deleteit=false;

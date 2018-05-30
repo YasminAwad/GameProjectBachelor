@@ -26,6 +26,7 @@ int main() {
     int food;
     int myRandom;
     int monsterRandom;
+    int flowerRandom;
     int enumMonsterRandom;
 
     //create the main window
@@ -122,12 +123,21 @@ int main() {
     pickupArray.push_back(pickup1);
     pickup1.loadTexture();
 
+    //Flower Vector Array
+    vector<Wall>::const_iterator iter16;
+    vector<Wall> flowerArray;
+
+    //Flower Object
+    Wall flower(WallTexture::flower);
+    flowerArray.push_back(flower);
+    flower.loadTexture();
+
     //Wall Vector Array
     vector<Wall>::const_iterator iter15;
     vector<Wall> wallArray;
 
     //Wall Object
-    Wall wall1;
+    Wall wall1(WallTexture::tree);
     wallArray.push_back(wall1);
     wall1.loadTexture();
 
@@ -150,10 +160,11 @@ int main() {
         wallArray.push_back(wall1);
         counter++;
     }
-    //Create Vertical Wall
+    //Wall vertical sx
+    CustomWall wallsx(30,0,50);
     counter=0;
-    while(counter<wallbossSX.wallSize){
-        wall1.rect.setPosition(wallbossSX.rectSizeX*wallbossSX.wallSize + wallbossSX.roomStartY, wallbossSX.rectSizeY*counter + wallbossSX.roomStartX);
+    while(counter<wallsx.wallSize){
+        wall1.rect.setPosition(wallbossSX.rectSizeX*wallbossSX.roomStartX, wallbossSX.rectSizeY*counter + wallsx.roomStartY);
         wallArray.push_back(wall1);
         counter++;
     }
@@ -537,6 +548,14 @@ int main() {
         window.setView(view1);
         view1.setCenter(player.rect.getPosition());
 
+        //Draw Flower
+        counter=0;
+        for(iter16=flowerArray.begin(); iter16!=flowerArray.end(); iter16++){
+            flowerArray[counter].update();
+            window.draw(flowerArray[counter].sprite);
+            counter++;
+        }
+
         //Draw Wall
         counter=0;
         for(iter15=wallArray.begin(); iter15!=wallArray.end(); iter15++){
@@ -557,7 +576,7 @@ int main() {
             counter++;
         }
 
-        //Random Generate Monster //FIXME: appaiono cose strane (grafica)
+        //Random Generate Monster
         monsterRandom=Random::generateRandom(2);
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Y)){
             if(monsterRandom==1) {
@@ -570,6 +589,15 @@ int main() {
             }
         }
 
+        /*//Random Generate Flower
+        counter=50;
+        //for(counter; counter>0; counter++) {
+            flowerRandom = Random::generateRandom0(3);
+            flower.sprite.setTextureRect(sf::IntRect(9 * 32, flowerRandom * 32, 32, 32));
+            flower.rect.setPosition(Random::generateRandom(1530),
+                                    Random::generateRandom(window.getSize().y) + 510);
+            flowerArray.push_back(flower);
+        //}*/
 
         //Draw Monster
         counter=0;
