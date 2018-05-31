@@ -11,6 +11,7 @@
 #include "Sound.h"
 #include "TileMap.h"
 #include "CustomWall.h"
+//#include "gtest/gtest.h"
 
 using namespace std;
 
@@ -39,7 +40,7 @@ int main() {
     view1.setCenter(sf::Vector2f(view1.getSize().x/2, view1.getSize().y/2));
     window.setView(view1);
 
-    GameCharacter player(window.getPosition().x/2 + 530, window.getPosition().y/2 + 1480, 10, 50, GCharacters::boy);
+    GameCharacter player(window.getPosition().x/2 + 530, window.getPosition().y/2 + 1480, 10, 50, 50, GCharacters::boy);
 
     //set the icon
     sf::Image icon;
@@ -49,10 +50,10 @@ int main() {
     window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
     //Music
-   /* Sound sound;
+    Sound sound;
     sound.loadSound();
     sound.music.play();
-    sound.music.setLoop(true);*/
+    sound.music.setLoop(true);
 
     //Create a graphical text to display
     sf::Font font;
@@ -114,14 +115,32 @@ int main() {
     TextDisplay textdisplay1;
     textdisplay1.text.setFont(font);
 
-    //Coin Vector Array
+    //PickUp Vector Array
     vector<PickUp>::const_iterator iter11;
     vector<PickUp> pickupArray;
 
-    //Coin Object
+    //PickUp Object
     PickUp pickup1;
     pickupArray.push_back(pickup1);
     pickup1.loadTexture();
+    pickup1.text.setFont(font);
+    pickup1.text.setCharacterSize(17);
+    pickup1.text.setColor(sf::Color::Black);
+
+    //Key
+    pickup1.cost=15;
+    pickup1.text.setString("Costs " + to_string(pickup1.cost));
+    pickup1.inShop=true;
+    pickup1.isKey=true;
+    pickup1.isCoin=false;
+    pickup1.isFood=false;
+    pickup1.isNovaAttack=false;
+    pickup1.isPowerUp=false;
+    pickup1.sprite.setTextureRect(sf::IntRect(24*3,24*5,24,24));
+
+    pickup1.rect.setPosition(100, 1000);
+    pickupArray.push_back(pickup1);
+    pickup1.inShop=false;
 
     //Flower Vector Array
     vector<Wall>::const_iterator iter16;
@@ -143,7 +162,7 @@ int main() {
 
     //Custom Room
 
-    //Boss Wall sx
+    /*//Boss Wall sx
     CustomWall wallbossSX(16,0,45);
     counter=0;
     while(counter<wallbossSX.wallSize){
@@ -167,7 +186,7 @@ int main() {
         wall1.rect.setPosition(wallbossSX.rectSizeX*wallbossSX.roomStartX, wallbossSX.rectSizeY*counter + wallsx.roomStartY);
         wallArray.push_back(wall1);
         counter++;
-    }
+    }*/
 
 // define the level with an array of tile indices
     const int level[] =
@@ -272,7 +291,7 @@ int main() {
             clock.restart();
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 
-                //sound.soundShot.play();
+                sound.soundShot.play();
 
                 //PowerUp Attack
                 if(player.powerUpLevel==true) {
@@ -322,9 +341,8 @@ int main() {
             for(iter4=monsterArray.begin(); iter4!=monsterArray.end(); iter4++){
                 if(projectileArray[counter].rect.getGlobalBounds().intersects(monsterArray[counter2].rect.getGlobalBounds())){
                     projectileArray[counter].destroy=true;
-                    //delete &projectileArray[counter];
 
-                    //sound.soundCollision.play();
+                    sound.soundCollision.play();
 
                     //Text Display
                     textdisplay1.text.setString(to_string(projectileArray[counter].attackDamage));
@@ -335,7 +353,6 @@ int main() {
 
                     if(monsterArray[counter2].hp<=0){
                         monsterArray[counter2].alive=false;
-                        //delete &monsterArray[counter2];
                     }
                 }
                 counter2++;
@@ -350,7 +367,7 @@ int main() {
             for(iter4=monsterArray.begin(); iter4!=monsterArray.end(); iter4++){
                 if(player.rect.getGlobalBounds().intersects(monsterArray[counter].rect.getGlobalBounds())){
 
-//                    sound.soundPDamage.play();
+                    sound.soundPDamage.play();
 
                     //Text Display
                     textdisplay1.text.setString(to_string(monsterArray[counter].attackDamage));
@@ -373,7 +390,7 @@ int main() {
                 if (monsterArray[counter].rect.getGlobalBounds().intersects(
                         wallArray[counter2].rect.getGlobalBounds())) {
 
-                    //Hit Wall
+                    //Hit Wall //FIXME: i mostri trapassano le mura
                     if (monsterArray[counter].direction == Direction::up) {
                         monsterArray[counter].canMoveUp = false;
                         monsterArray[counter].rect.move(0, monster1.movementSpeed);
@@ -402,28 +419,39 @@ int main() {
             if (player.rect.getGlobalBounds().intersects(pickupArray[counter].rect.getGlobalBounds())) {
                 if (pickupArray[counter].isCoin == true) {
                     //sound.soundCoin.setVolume(100);
-                    //sound.soundCoin.play();
+                    sound.soundCoin.play();
                     player.gil += pickupArray[counter].coinValue;
+                    pickupArray[counter].destroy = true;
+                }
+                if(pickupArray[counter].inShop==true){
+                    if(player.gil>=pickupArray[counter].cost){
+                        player.gil-=pickupArray[counter].cost;
+                        if(pickupArray[counter].isKey==true){
+                            sound.soundCoin.play();
+                            player.key=true;
+                            pickupArray[counter].destroy = true;
+                            cout<<"key collected"<<endl;//FIXME: creare porta da aprire
+                        }
+                    }
                 }
                 if(pickupArray[counter].isPowerUp==true){
-                    //sound.soundPower.play();
+                    sound.soundPower.play();
                     player.powerUpLevel=true;
                     player.novaAttack=false;
+                    pickupArray[counter].destroy = true;
                 }
                 if(pickupArray[counter].isNovaAttack==true){
-                    //sound.soundPower.play();
+                    sound.soundPower.play();
                     player.powerUpLevel=false;
                     player.novaAttack=true;
+                    pickupArray[counter].destroy = true;
                 }
                 if(pickupArray[counter].isFood==true){
-                    //sound.soundCoin.setVolume(100);
-                    //sound.soundCoin.play();
+                    sound.soundCoin.setVolume(100);
+                    sound.soundCoin.play();
                     player.hp += pickupArray[counter].foodValue;
-                    if(player.hp>=player.maxHP) //FIXME
-                        player.hp==player.maxHP;
+                    pickupArray[counter].destroy = true;
                     }
-
-                pickupArray[counter].destroy = true;
             }
             counter++;
         }
@@ -548,13 +576,13 @@ int main() {
         window.setView(view1);
         view1.setCenter(player.rect.getPosition());
 
-        //Draw Flower
+        /*//Draw Flower
         counter=0;
         for(iter16=flowerArray.begin(); iter16!=flowerArray.end(); iter16++){
             flowerArray[counter].update();
             window.draw(flowerArray[counter].sprite);
             counter++;
-        }
+        }*/ //
 
         //Draw Wall
         counter=0;
@@ -589,7 +617,7 @@ int main() {
             }
         }
 
-        /*//Random Generate Flower
+        /*//Random Generate Flower //FIXME: fiori infiniti e posizione
         counter=50;
         //for(counter; counter>0; counter++) {
             flowerRandom = Random::generateRandom0(3);
@@ -609,7 +637,7 @@ int main() {
         }
 
 
-        //Draw Text non mi ricordo più cos'è ?????????????????? FIXME: cos'è
+        //Draw Text (Player Damage)
         counter=0;
         for(iter8=textdisplayArray.begin(); iter8!=textdisplayArray.end(); iter8++){
 
@@ -622,17 +650,20 @@ int main() {
         //Draw PickUp Items
         counter=0;
         for(iter11=pickupArray.begin(); iter11!=pickupArray.end(); iter11++){
+            if(pickupArray[counter].inShop==true){
+                window.draw(pickupArray[counter].text);
+            }
             pickupArray[counter].update();
             window.draw(pickupArray[counter].sprite);
             counter++;
         }
 
-        //Gil Text
+        //Draw Gil Text
         text.setPosition(player.rect.getPosition().x-window.getSize().x/2, player.rect.getPosition().y-window.getSize().y/2 + 50);
         text.setString("Gil:"+to_string(player.gil));
         window.draw(text);
 
-        //Player HP Text
+        //Draw Player HP Text
         textHP.setString("HP:" + to_string(player.hp) + "/" + to_string(player.maxHP));
         textHP.setPosition(player.rect.getPosition().x - window.getSize().x/2, player.rect.getPosition().y - window.getSize().y/2);
         window.draw(textHP);

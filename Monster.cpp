@@ -157,16 +157,3 @@ void Monster::updateMovement() {
         }
     }
 }
-
-//Monster::~Monster() {}
-
-/* if (myRandom == 1)
-            direction = Direction::up;
-        else if (myRandom == 2)
-            direction = Direction::down;
-        else if (myRandom == 3)
-            direction = Direction::left;
-        else if (myRandom == 4)
-            direction = Direction::right;
-        else
-            direction == Direction::null;*/

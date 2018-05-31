@@ -23,6 +23,7 @@ public:
     int gil=0;
     bool powerUpLevel=false;
     bool novaAttack=false;
+    bool key=false;
 
     bool canMoveUp=true;
     bool canMoveDown=true;
@@ -33,7 +34,7 @@ public:
     void updateMovement(Direction direction1);
     int loadTexture();
 
-    GameCharacter(int posx, int posy, int damage, int hp, GCharacters gameCharacter);
+    GameCharacter(int posx, int posy, int damage, int hp, int maxHP, GCharacters gameCharacter);
     GameCharacter(){}
 
     virtual ~GameCharacter(){}

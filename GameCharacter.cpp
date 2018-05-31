@@ -8,8 +8,8 @@ using namespace std;
 #include "GameCharacter.h"
 
 
-GameCharacter::GameCharacter(int posx, int posy, int damage, int hp, GCharacters gameCharacter):
-        Character(posx, posy, damage, hp), gameCharacter(gameCharacter){
+GameCharacter::GameCharacter(int posx, int posy, int damage, int hp, int maxHP, GCharacters gameCharacter):
+        Character(posx, posy, damage, hp), maxHP(maxHP), gameCharacter(gameCharacter){
     if(gameCharacter==GCharacters::girl) {
         sprite.setTextureRect(sf::IntRect(0, 0, 24, 32));
     }
@@ -29,6 +29,9 @@ GameCharacter::GameCharacter(int posx, int posy, int damage, int hp, GCharacters
 
 void GameCharacter ::update() {
     sprite.setPosition(rect.getPosition());
+    if(hp>=maxHP){
+        hp=maxHP;
+    }
 }
 
 void GameCharacter::updateMovement(Direction direction1){
@@ -112,5 +115,3 @@ int GameCharacter::loadTexture() {
                 return EXIT_FAILURE;
     }
 }
-
-//GameCharacter::~GameCharacter() {}

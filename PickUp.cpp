@@ -14,6 +14,7 @@ PickUp::PickUp() {
 
 void PickUp::update() {
     sprite.setPosition(rect.getPosition());
+    text.setPosition(rect.getPosition().x, rect.getPosition().y - 30);
 }
 
 int PickUp::loadTexture() {
@@ -21,5 +22,3 @@ int PickUp::loadTexture() {
         return EXIT_FAILURE;
     }
 }
-
-//PickUp::~PickUp() {}

@@ -5,7 +5,6 @@
 #ifndef GAME_PROVA3_TEXTDISPLAY_H
 #define GAME_PROVA3_TEXTDISPLAY_H
 
-
 #include "Entity.h"
 #include <string>
 
