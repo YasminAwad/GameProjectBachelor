@@ -20,7 +20,7 @@ public:
     int counterWalking=0;
     GCharacters gameCharacter;
     string name="name";
-    int gil=0;
+    int wallet=0;
     bool powerUpLevel=false;
     bool novaAttack=false;
     bool key=false;

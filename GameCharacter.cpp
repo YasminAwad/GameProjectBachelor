@@ -22,9 +22,6 @@ GameCharacter::GameCharacter(int posx, int posy, int damage, int hp, int maxHP, 
     rect.setFillColor(sf::Color::Blue);
     sprite.setTexture(texture);
 
-    //cout<<"Inserisci il nome del tuo personaggio:"<<endl;
-    //cin>>name;
-
 }
 
 void GameCharacter ::update() {

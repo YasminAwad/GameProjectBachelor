@@ -7,12 +7,12 @@
 
 
 class CustomWall {
-    public:
+public:
     int wallSize=16; //33
     int roomStartX=0;
     int roomStartY=45;
     int rectSizeX=46;
-    int rectSizeY=460;
+    int rectSizeY=46;
 
     CustomWall(int wallSize, int roomStartX, int roomStartY);
     ~CustomWall(){}

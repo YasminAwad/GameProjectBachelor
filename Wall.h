@@ -11,9 +11,6 @@
 
 class Wall: public Entity {
 public:
-    bool destructible= false;
-    bool destroy=false;
-    int hp=5;
     WallTexture textureChoice;
 
     Wall(WallTexture textureChoice);

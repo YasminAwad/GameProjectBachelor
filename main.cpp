@@ -11,7 +11,7 @@
 #include "Sound.h"
 #include "TileMap.h"
 #include "CustomWall.h"
-//#include "gtest/gtest.h"
+
 
 using namespace std;
 
@@ -28,7 +28,6 @@ int main() {
     int myRandom;
     int monsterRandom;
     int flowerRandom;
-    int enumMonsterRandom;
 
     //create the main window
     sf::RenderWindow window(sf::VideoMode(1000, 1000), "GAME_PROVA3");
@@ -66,7 +65,7 @@ int main() {
     text.setPosition(0,0);
 
     sf::Text textHP("HP", font, 25);
-    textHP.setColor(sf::Color::Black);
+    textHP.setColor(sf::Color::White);
 
     //Load a sprite to display
     sf::Texture textureForest;
@@ -163,7 +162,7 @@ int main() {
     //Custom Room
 
     /*//Boss Wall sx
-    CustomWall wallbossSX(16,0,45);
+    CustomWall wallbossSX(16,0,460);
     counter=0;
     while(counter<wallbossSX.wallSize){
         wall1.rect.setPosition(wallbossSX.rectSizeX * counter + wallbossSX.roomStartX, wallbossSX.rectSizeY + wallbossSX.roomStartY);
@@ -172,7 +171,7 @@ int main() {
     }
 
     //Boss Wall dx
-    CustomWall wallbossDX(16,800,45);
+    CustomWall wallbossDX(16,800,460);
     counter=0;
     while(counter<wallbossSX.wallSize){
         wall1.rect.setPosition(wallbossSX.rectSizeX * counter + wallbossDX.roomStartX, wallbossSX.rectSizeY + wallbossDX.roomStartY);
@@ -420,12 +419,12 @@ int main() {
                 if (pickupArray[counter].isCoin == true) {
                     //sound.soundCoin.setVolume(100);
                     sound.soundCoin.play();
-                    player.gil += pickupArray[counter].coinValue;
+                    player.wallet += pickupArray[counter].coinValue;
                     pickupArray[counter].destroy = true;
                 }
                 if(pickupArray[counter].inShop==true){
-                    if(player.gil>=pickupArray[counter].cost){
-                        player.gil-=pickupArray[counter].cost;
+                    if(player.wallet>=pickupArray[counter].cost){
+                        player.wallet-=pickupArray[counter].cost;
                         if(pickupArray[counter].isKey==true){
                             sound.soundCoin.play();
                             player.key=true;
@@ -660,7 +659,7 @@ int main() {
 
         //Draw Gil Text
         text.setPosition(player.rect.getPosition().x-window.getSize().x/2, player.rect.getPosition().y-window.getSize().y/2 + 50);
-        text.setString("Gil:"+to_string(player.gil));
+        text.setString("Coin:"+to_string(player.wallet));
         window.draw(text);
 
         //Draw Player HP Text
