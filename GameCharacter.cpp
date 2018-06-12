@@ -10,6 +10,7 @@ using namespace std;
 
 GameCharacter::GameCharacter(int posx, int posy, int damage, int hp, int maxHP, GCharacters gameCharacter):
         Character(posx, posy, damage, hp), maxHP(maxHP), gameCharacter(gameCharacter){
+
     if(gameCharacter==GCharacters::girl) {
         sprite.setTextureRect(sf::IntRect(0, 0, 24, 32));
     }
@@ -35,6 +36,7 @@ void GameCharacter::updateMovement(Direction direction1){
         if(direction1==Direction::up){
             if(canMoveUp==true) {
                 rect.move(0, -movementSpeed);
+                tileY+=1/7;
                 if(gameCharacter==GCharacters::girl)
                     sprite.setTextureRect(sf::IntRect(counterWalking * 24, 0, 24, 32));
                 else
@@ -52,6 +54,7 @@ void GameCharacter::updateMovement(Direction direction1){
         else if(direction1==Direction::down){
             if(canMoveDown==true){
                 rect.move(0, movementSpeed);
+                tileY-=1/7;
                 if(gameCharacter==GCharacters::girl)
                     sprite.setTextureRect(sf::IntRect(counterWalking * 24, 32 * 2, 24, 32));
                 else
@@ -69,6 +72,7 @@ void GameCharacter::updateMovement(Direction direction1){
         else if(direction1==Direction::left){
             if(canMoveLeft==true) {
                 rect.move(-movementSpeed, 0);
+                tileX-=1;
                 if(gameCharacter==GCharacters::girl)
                     sprite.setTextureRect(sf::IntRect(counterWalking * 24, 32 * 3, 24, 32));
                 else
@@ -86,6 +90,7 @@ void GameCharacter::updateMovement(Direction direction1){
         else if(direction1==Direction::right){
             if(canMoveRight==true) {
                 rect.move(movementSpeed, 0);
+                tileX+=1;
                 if(gameCharacter==GCharacters::girl)
                     sprite.setTextureRect(sf::IntRect(counterWalking * 24, 32, 24, 32));
                 else

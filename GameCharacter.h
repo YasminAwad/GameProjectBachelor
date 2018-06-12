@@ -14,6 +14,8 @@ using std::string;
 class GameCharacter : public Character {
 public:
 
+    float tileX=24;
+    float tileY=48;
     int maxHP=50;
     Direction direction;
     float movementSpeed=6;
