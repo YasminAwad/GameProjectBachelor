@@ -36,6 +36,7 @@ public:
     void updateMovement(Direction direction1);
     int loadTexture();
 
+
     GameCharacter(int posx, int posy, int damage, int hp, int maxHP, GCharacters gameCharacter);
     GameCharacter(){}
 

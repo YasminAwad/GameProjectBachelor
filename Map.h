@@ -7,17 +7,33 @@
 
 #include <vector>
 #include"Tile.h"
+#include "Muro.h"
+#include "Enumeration.h"
 
 
 class Map {
 public:
-    Map(int width, int height);
+    TileEnum textureChoice;
+
+    Map(int width, int height, TileEnum textureChoice);
     ~Map();
 
+    bool wakable=true;
+
     sf::Texture texture;
+    sf::Texture texturewall;
     int loadTexture();
 
     std::vector<Tile*> buffer;
+    std::vector<Muro*> wallBuffer;
+    Tile* door;
+
+    void setTile(int w, int h, const bool walkable);
+    Tile* getTile(int x, int y);
+    int getWidth() const;
+    int getHeight() const;
+
+    bool levelCompleted;
 
 private:
     int width;

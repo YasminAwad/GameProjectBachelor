@@ -11,6 +11,7 @@
 #include "Sound.h"
 #include "CustomWall.h"
 #include "Map.h"
+#include "Muro.h"
 
 
 using namespace std;
@@ -39,7 +40,7 @@ int main() {
     view1.setCenter(sf::Vector2f(view1.getSize().x/2, view1.getSize().y/2));
     window.setView(view1);
 
-    GameCharacter player(window.getPosition().x/2 + 530, window.getPosition().y/2 + 1480, 10, 50, 50, GCharacters::boy);
+    GameCharacter player(window.getPosition().x/2 + 530, window.getPosition().y/2 + 1400, 10, 50, 50, GCharacters::boy);
 
     //set the icon
     sf::Image icon;
@@ -159,92 +160,12 @@ int main() {
     wallArray.push_back(wall1);
     wall1.loadTexture();
 
-    Map map(48,48);
+    Map map(48,48,TileEnum::grass);
+    Map road(48,48,TileEnum::road);
+    Map bossRoom(48,48,TileEnum::bossRoom);
 
     map.loadTexture();
-
-    //Custom Room
-
-    /*//Boss Wall sx
-    CustomWall wallbossSX(16,0,460);
-    counter=0;
-    while(counter<wallbossSX.wallSize){
-        wall1.rect.setPosition(wallbossSX.rectSizeX * counter + wallbossSX.roomStartX, wallbossSX.rectSizeY + wallbossSX.roomStartY);
-        wallArray.push_back(wall1);
-        counter++;
-    }
-
-    //Boss Wall dx
-    CustomWall wallbossDX(16,800,460);
-    counter=0;
-    while(counter<wallbossSX.wallSize){
-        wall1.rect.setPosition(wallbossSX.rectSizeX * counter + wallbossDX.roomStartX, wallbossSX.rectSizeY + wallbossDX.roomStartY);
-        wallArray.push_back(wall1);
-        counter++;
-    }
-    //Wall vertical sx
-    CustomWall wallsx(30,0,50);
-    counter=0;
-    while(counter<wallsx.wallSize){
-        wall1.rect.setPosition(wallbossSX.rectSizeX*wallbossSX.roomStartX, wallbossSX.rectSizeY*counter + wallsx.roomStartY);
-        wallArray.push_back(wall1);
-        counter++;
-    }*/
-
-// define the level with an array of tile indices
-    const int level[] =
-            {
-                    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,//1
-                    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,//2
-                    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,//3
-                    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,//4
-                    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,//5
-                    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,//6
-                    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,//7
-                    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,//8
-                    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,//9
-                    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,//10
-                    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,//11
-                    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,//12
-                    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,//13
-                    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,//14
-                    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,//15
-                    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,//16
-                    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,//17
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//18
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//19
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//20
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//21
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//22
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//23
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//24
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//25
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//26
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//27
-                    2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//28
-                    2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//29
-                    2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//30
-                    2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,//31
-                    2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,//32
-                    2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,//33
-                    2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//34
-                    2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//35
-                    2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//36
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//37
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//38
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//39
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//40
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//41
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//42
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//43
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//44
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//45
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//46
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//47
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,//48
-
-
-            };
+    road.loadTexture();
 
 //start the game loop
 
@@ -272,6 +193,112 @@ int main() {
 
         for(int i=0; i<map.buffer.size(); i++) {
             window.draw(map.buffer[i]->sprite);
+        }
+
+
+        //Horizontal Road
+        for(int i=0; i<48; i++)
+            window.draw(road.buffer[23+ i*48]->sprite);
+        for(int i=0; i<48; i++)
+            window.draw(road.buffer[24+ i*48]->sprite);
+        for(int i=0; i<48; i++)
+            window.draw(road.buffer[25+ i*48]->sprite);
+
+        //Vertical Road
+        for(int i=0; i<48; i++)
+            window.draw(road.buffer[23*48+i]->sprite);
+        for(int i=0; i<48; i++)
+            window.draw(road.buffer[24*48+i]->sprite);
+        for(int i=0; i<48; i++)
+            window.draw(road.buffer[25*48+i]->sprite);
+
+        //Boss Room
+        for(int i=0; i<15; i++) {
+            for (int j = 11; j < 38; j++) {
+                window.draw(road.buffer[j * 48 + i]->sprite);
+            }
+        }
+
+        //Draw Wall
+        //Vertical
+        for(int i=0; i<33; i++) {
+            window.draw(map.wallBuffer[i]->sprite);
+            if (player.rect.getGlobalBounds().intersects(map.wallBuffer[i]->rect.getGlobalBounds())) {
+                //Hit Wall
+                if (player.direction == Direction::up) {
+                    player.canMoveUp = false;
+                    player.rect.move(0, player.movementSpeed);
+                } else if (player.direction == Direction::down) {
+                    player.canMoveDown = false;
+                    player.rect.move(0, -player.movementSpeed);
+                } else if (player.direction == Direction::left) {
+                    player.canMoveLeft = false;
+                    player.rect.move(player.movementSpeed, 0);
+                } else if (player.direction == Direction::right) {
+                    player.canMoveRight = false;
+                    player.rect.move(-player.movementSpeed, 0);
+                } else {}
+            }
+        }
+        for(int i=0; i<33; i++) {
+            window.draw(map.wallBuffer[32 * 48 + i]->sprite);
+            if (player.rect.getGlobalBounds().intersects(map.wallBuffer[32 * 48 + i]->rect.getGlobalBounds())) {
+                //Hit Wall
+                if (player.direction == Direction::up) {
+                    player.canMoveUp = false;
+                    player.rect.move(0, player.movementSpeed);
+                } else if (player.direction == Direction::down) {
+                    player.canMoveDown = false;
+                    player.rect.move(0, -player.movementSpeed);
+                } else if (player.direction == Direction::left) {
+                    player.canMoveLeft = false;
+                    player.rect.move(player.movementSpeed, 0);
+                } else if (player.direction == Direction::right) {
+                    player.canMoveRight = false;
+                    player.rect.move(-player.movementSpeed, 0);
+                } else {}
+            }
+        }
+        //Horizontal
+        //Up
+        for(int i=0; i<33; i++) {
+            window.draw(map.wallBuffer[48* i]->sprite);
+            if (player.rect.getGlobalBounds().intersects(map.wallBuffer[48*i]->rect.getGlobalBounds())) {
+                //Hit Wall
+                if (player.direction == Direction::up) {
+                    player.canMoveUp = false;
+                    player.rect.move(0, player.movementSpeed);
+                } else if (player.direction == Direction::down) {
+                    player.canMoveDown = false;
+                    player.rect.move(0, -player.movementSpeed);
+                } else if (player.direction == Direction::left) {
+                    player.canMoveLeft = false;
+                    player.rect.move(player.movementSpeed, 0);
+                } else if (player.direction == Direction::right) {
+                    player.canMoveRight = false;
+                    player.rect.move(-player.movementSpeed, 0);
+                } else {}
+            }
+        }
+        //Down
+        for(int i=0; i<33; i++) {
+            window.draw(map.wallBuffer[48* i+32]->sprite);
+            if (player.rect.getGlobalBounds().intersects(map.wallBuffer[48* i+32]->rect.getGlobalBounds())) {
+                //Hit Wall
+                if (player.direction == Direction::up) {
+                    player.canMoveUp = false;
+                    player.rect.move(0, player.movementSpeed);
+                } else if (player.direction == Direction::down) {
+                    player.canMoveDown = false;
+                    player.rect.move(0, -player.movementSpeed);
+                } else if (player.direction == Direction::left) {
+                    player.canMoveLeft = false;
+                    player.rect.move(player.movementSpeed, 0);
+                } else if (player.direction == Direction::right) {
+                    player.canMoveRight = false;
+                    player.rect.move(-player.movementSpeed, 0);
+                } else {}
+            }
         }
 
         player.update();
@@ -458,8 +485,8 @@ int main() {
 
         //Player Collides with Wall
         counter=0;
-        for(iter15=wallArray.begin(); iter15!=wallArray.end(); iter15++){
-            if(player.rect.getGlobalBounds().intersects(wallArray[counter].rect.getGlobalBounds())) {
+       /* for(int i=0; i<48*48; i++){
+            if(player.rect.getGlobalBounds().intersects(map.wallBuffer[i]->rect.getGlobalBounds())){
                 //Hit Wall
                 if (player.direction == Direction::up) {
                     player.canMoveUp = false;
@@ -480,7 +507,7 @@ int main() {
                 else{}
             }
             counter++;
-        }
+        }*/
 
         //Delete Dead Monsters
         counter=0;

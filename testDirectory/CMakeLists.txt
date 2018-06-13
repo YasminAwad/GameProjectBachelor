@@ -5,7 +5,7 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 set(EXECUTABLE_NAME "runAllTests")
 
 set(TEST_SOURCE_FILES)
-add_executable(${EXECUTABLE_NAME} runAllTests.cpp)
+add_executable(${EXECUTABLE_NAME} runAllTests.cpp MapTest.cpp GameCharacterTest.cpp)
 target_link_libraries(runAllTests gtest gtest_main core)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULES_PATH})

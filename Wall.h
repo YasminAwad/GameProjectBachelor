@@ -7,17 +7,20 @@
 
 
 #include "Entity.h"
+#include "Tile.h"
 #include "Enumeration.h"
 
+
 class Wall: public Entity {
-public:
-    WallTexture textureChoice;
+    public:
+        WallTexture textureChoice;
 
-    Wall(WallTexture textureChoice);
-    virtual ~Wall(){}
+        Wall(WallTexture textureChoice);
+        virtual ~Wall(){}
 
-    int loadTexture();
-    void update();
+        int loadTexture();
+        void update();
+
 
 };
 

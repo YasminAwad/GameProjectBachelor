@@ -14,6 +14,8 @@ enum class Monsters {bat, rat, boss};
 
 enum class WallTexture {tree, flower};
 
+enum class TileEnum {grass, road, bossRoom, tree};
+
 
 
 #endif //GAME_PROVA3_ENUMERATION_H
