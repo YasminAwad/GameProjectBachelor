@@ -11,17 +11,19 @@
 #include "Enumeration.h"
 
 
-class Wall: public Entity {
-    public:
-        WallTexture textureChoice;
+class Wall : public Tile{
 
-        Wall(WallTexture textureChoice);
-        virtual ~Wall(){}
+public:
+    Wall(int x, int y) : posX(x), posY(y) {
+        rect.setSize(sf::Vector2f(46, 46));
+        rect.setPosition(x, y);
+        rect.setFillColor(sf::Color::Black);
+        sprite.setPosition(rect.getPosition());
+        sprite.setTextureRect(sf::IntRect(0, 0, 46, 46));
+    }
 
-        int loadTexture();
-        void update();
-
-
+    int posX;
+    int posY;
 };
 
 

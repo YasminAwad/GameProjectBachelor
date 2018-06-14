@@ -9,9 +9,8 @@
 #include "PickUp.h"
 #include "Wall.h"
 #include "Sound.h"
-#include "CustomWall.h"
 #include "Map.h"
-#include "Muro.h"
+#include "MapObjects.h"
 
 
 using namespace std;
@@ -20,15 +19,14 @@ int main() {
 
     //Variables
     srand(time(NULL));
-    int counter;
-    int counter2;
+    int counter=0;
+    int counter2=0;
     sf::Clock clock;
     sf::Clock clock2;
     sf::Clock clock3;
     int food;
     int myRandom;
     int monsterRandom;
-    int flowerRandom;
 
     //create the main window
     sf::RenderWindow window(sf::VideoMode(1000, 1000), "GAME_PROVA3");
@@ -40,13 +38,12 @@ int main() {
     view1.setCenter(sf::Vector2f(view1.getSize().x/2, view1.getSize().y/2));
     window.setView(view1);
 
-    GameCharacter player(window.getPosition().x/2 + 530, window.getPosition().y/2 + 1400, 10, 50, 50, GCharacters::boy);
+    GameCharacter player(window.getPosition().x/2 + 560, window.getPosition().y/2 + 1400, 10, 50, 50, GCharacters::boy);
 
     //set the icon
     sf::Image icon;
-    if (!icon.loadFromFile("../RisorseSprite/videogamepad.png")) {
+    if (!icon.loadFromFile("../RisorseSprite/videogamepad.png"))
         return EXIT_FAILURE;
-    }
     window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
     //Music
@@ -57,9 +54,8 @@ int main() {
 
     //Create a graphical text to display
     sf::Font font;
-    if(!font.loadFromFile("../RisorseFont/pokemon.ttf")){
+    if(!font.loadFromFile("../RisorseFont/pokemon.ttf"))
         return EXIT_FAILURE;
-    }
 
     sf::Text text("Gil", font, 25);
     //text.setColor(sf::Color::White);
@@ -67,19 +63,6 @@ int main() {
 
     sf::Text textHP("HP", font, 25);
     textHP.setColor(sf::Color::White);
-
-    //Load a sprite to display
-    sf::Texture textureForest;
-
-    if (!textureForest.loadFromFile("../RisorseSprite/forest.jpg")) {
-        return EXIT_FAILURE;
-    }
-
-    sf::Sprite forest;
-    sf::RectangleShape rect;
-    forest.setTexture(textureForest);
-    rect.setPosition(0, 0);
-    forest.setPosition(rect.getPosition());
 
     player.loadTexture();
 
@@ -128,7 +111,7 @@ int main() {
     pickup1.text.setColor(sf::Color::Black);
 
     //Key
-    pickup1.cost=15;
+    pickup1.cost=5;
     pickup1.text.setString("Costs " + to_string(pickup1.cost));
     pickup1.inShop=true;
     pickup1.isKey=true;
@@ -138,27 +121,9 @@ int main() {
     pickup1.isPowerUp=false;
     pickup1.sprite.setTextureRect(sf::IntRect(24*3,24*5,24,24));
 
-    pickup1.rect.setPosition(100, 1000);
+    pickup1.rect.setPosition(100, 780);
     pickupArray.push_back(pickup1);
     pickup1.inShop=false;
-
-    //Flower Vector Array
-    vector<Wall>::const_iterator iter16;
-    vector<Wall> flowerArray;
-
-    //Flower Object
-    Wall flower(WallTexture::flower);
-    flowerArray.push_back(flower);
-    flower.loadTexture();
-
-    //Wall Vector Array
-    vector<Wall>::const_iterator iter15;
-    vector<Wall> wallArray;
-
-    //Wall Object
-    Wall wall1(WallTexture::tree);
-    wallArray.push_back(wall1);
-    wall1.loadTexture();
 
     Map map(48,48,TileEnum::grass);
     Map road(48,48,TileEnum::road);
@@ -166,6 +131,12 @@ int main() {
 
     map.loadTexture();
     road.loadTexture();
+
+    MapObjects door1(TileEnum::door);
+    door1.loadTexture();
+    MapObjects door2(TileEnum::door);
+    door2.rect.setPosition(770, 450);
+    door2.loadTexture();
 
 //start the game loop
 
@@ -191,115 +162,17 @@ int main() {
         sf::Time elapsed2=clock2.getElapsedTime();
         sf::Time elapsed3=clock3.getElapsedTime();
 
-        for(int i=0; i<map.buffer.size(); i++) {
-            window.draw(map.buffer[i]->sprite);
-        }
+        map.drawGrass(&window);
+        road.drawRoad(&window);
 
-
-        //Horizontal Road
-        for(int i=0; i<48; i++)
-            window.draw(road.buffer[23+ i*48]->sprite);
-        for(int i=0; i<48; i++)
-            window.draw(road.buffer[24+ i*48]->sprite);
-        for(int i=0; i<48; i++)
-            window.draw(road.buffer[25+ i*48]->sprite);
-
-        //Vertical Road
-        for(int i=0; i<48; i++)
-            window.draw(road.buffer[23*48+i]->sprite);
-        for(int i=0; i<48; i++)
-            window.draw(road.buffer[24*48+i]->sprite);
-        for(int i=0; i<48; i++)
-            window.draw(road.buffer[25*48+i]->sprite);
-
-        //Boss Room
-        for(int i=0; i<15; i++) {
-            for (int j = 11; j < 38; j++) {
-                window.draw(road.buffer[j * 48 + i]->sprite);
-            }
-        }
+        //Door
+        window.draw(door1.sprite);
+        window.draw(door2.sprite);
+        door1.update(&player);
+        door2.update(&player);
 
         //Draw Wall
-        //Vertical
-        for(int i=0; i<33; i++) {
-            window.draw(map.wallBuffer[i]->sprite);
-            if (player.rect.getGlobalBounds().intersects(map.wallBuffer[i]->rect.getGlobalBounds())) {
-                //Hit Wall
-                if (player.direction == Direction::up) {
-                    player.canMoveUp = false;
-                    player.rect.move(0, player.movementSpeed);
-                } else if (player.direction == Direction::down) {
-                    player.canMoveDown = false;
-                    player.rect.move(0, -player.movementSpeed);
-                } else if (player.direction == Direction::left) {
-                    player.canMoveLeft = false;
-                    player.rect.move(player.movementSpeed, 0);
-                } else if (player.direction == Direction::right) {
-                    player.canMoveRight = false;
-                    player.rect.move(-player.movementSpeed, 0);
-                } else {}
-            }
-        }
-        for(int i=0; i<33; i++) {
-            window.draw(map.wallBuffer[32 * 48 + i]->sprite);
-            if (player.rect.getGlobalBounds().intersects(map.wallBuffer[32 * 48 + i]->rect.getGlobalBounds())) {
-                //Hit Wall
-                if (player.direction == Direction::up) {
-                    player.canMoveUp = false;
-                    player.rect.move(0, player.movementSpeed);
-                } else if (player.direction == Direction::down) {
-                    player.canMoveDown = false;
-                    player.rect.move(0, -player.movementSpeed);
-                } else if (player.direction == Direction::left) {
-                    player.canMoveLeft = false;
-                    player.rect.move(player.movementSpeed, 0);
-                } else if (player.direction == Direction::right) {
-                    player.canMoveRight = false;
-                    player.rect.move(-player.movementSpeed, 0);
-                } else {}
-            }
-        }
-        //Horizontal
-        //Up
-        for(int i=0; i<33; i++) {
-            window.draw(map.wallBuffer[48* i]->sprite);
-            if (player.rect.getGlobalBounds().intersects(map.wallBuffer[48*i]->rect.getGlobalBounds())) {
-                //Hit Wall
-                if (player.direction == Direction::up) {
-                    player.canMoveUp = false;
-                    player.rect.move(0, player.movementSpeed);
-                } else if (player.direction == Direction::down) {
-                    player.canMoveDown = false;
-                    player.rect.move(0, -player.movementSpeed);
-                } else if (player.direction == Direction::left) {
-                    player.canMoveLeft = false;
-                    player.rect.move(player.movementSpeed, 0);
-                } else if (player.direction == Direction::right) {
-                    player.canMoveRight = false;
-                    player.rect.move(-player.movementSpeed, 0);
-                } else {}
-            }
-        }
-        //Down
-        for(int i=0; i<33; i++) {
-            window.draw(map.wallBuffer[48* i+32]->sprite);
-            if (player.rect.getGlobalBounds().intersects(map.wallBuffer[48* i+32]->rect.getGlobalBounds())) {
-                //Hit Wall
-                if (player.direction == Direction::up) {
-                    player.canMoveUp = false;
-                    player.rect.move(0, player.movementSpeed);
-                } else if (player.direction == Direction::down) {
-                    player.canMoveDown = false;
-                    player.rect.move(0, -player.movementSpeed);
-                } else if (player.direction == Direction::left) {
-                    player.canMoveLeft = false;
-                    player.rect.move(player.movementSpeed, 0);
-                } else if (player.direction == Direction::right) {
-                    player.canMoveRight = false;
-                    player.rect.move(-player.movementSpeed, 0);
-                } else {}
-            }
-        }
+        map.drawWall(&window, &player, monsterArray);
 
         player.update();
 
@@ -409,37 +282,6 @@ int main() {
             }
         }
 
-        //Monster Collides with Wall
-        counter=0;
-        counter2=0;
-        for(iter4=monsterArray.begin(); iter4!=monsterArray.end(); iter4++){
-            for(iter15=wallArray.begin(); iter15!=wallArray.end(); iter15++){
-                if (monsterArray[counter].rect.getGlobalBounds().intersects(
-                        wallArray[counter2].rect.getGlobalBounds())) {
-
-                    //Hit Wall //FIXME: i mostri trapassano le mura
-                    if (monsterArray[counter].direction == Direction::up) {
-                        monsterArray[counter].canMoveUp = false;
-                        monsterArray[counter].rect.move(0, monster1.movementSpeed);
-                    }
-                    else if (monsterArray[counter].direction == Direction::down) {
-                        monsterArray[counter].canMoveDown = false;
-                        monsterArray[counter].rect.move(0, -monster1.movementSpeed);
-                    }
-                    else if (monsterArray[counter].direction == Direction::left) {
-                        monsterArray[counter].canMoveLeft = false;
-                        monsterArray[counter].rect.move(monster1.movementSpeed, 0);
-                    }
-                    else if (monsterArray[counter].direction == Direction::right) {
-                        monsterArray[counter].canMoveRight = false;
-                        monsterArray[counter].rect.move(-monster1.movementSpeed, 0);
-                    } else {}
-                }
-                counter2++;
-            }
-            counter++;
-        };
-
         //Player Collides with PickUp Item
         counter=0;
         for(iter11=pickupArray.begin(); iter11!=pickupArray.end(); iter11++) {
@@ -456,6 +298,8 @@ int main() {
                         if(pickupArray[counter].isKey==true){
                             sound.soundCoin.play();
                             player.key=true;
+                            door1.open=true;
+                            door2.open=true;
                             pickupArray[counter].destroy = true;
                             cout<<"key collected"<<endl;//FIXME: creare porta da aprire
                         }
@@ -482,32 +326,6 @@ int main() {
             }
             counter++;
         }
-
-        //Player Collides with Wall
-        counter=0;
-       /* for(int i=0; i<48*48; i++){
-            if(player.rect.getGlobalBounds().intersects(map.wallBuffer[i]->rect.getGlobalBounds())){
-                //Hit Wall
-                if (player.direction == Direction::up) {
-                    player.canMoveUp = false;
-                    player.rect.move(0, player.movementSpeed);
-                }
-                else if (player.direction == Direction::down) {
-                    player.canMoveDown = false;
-                    player.rect.move(0, -player.movementSpeed);
-                }
-                else if (player.direction == Direction::left) {
-                    player.canMoveLeft = false;
-                    player.rect.move(player.movementSpeed, 0);
-                }
-                else if (player.direction == Direction::right) {
-                    player.canMoveRight = false;
-                    player.rect.move(-player.movementSpeed, 0);
-                }
-                else{}
-            }
-            counter++;
-        }*/
 
         //Delete Dead Monsters
         counter=0;
@@ -603,22 +421,6 @@ int main() {
         window.setView(view1);
         view1.setCenter(player.rect.getPosition());
 
-        /*//Draw Flower
-        counter=0;
-        for(iter16=flowerArray.begin(); iter16!=flowerArray.end(); iter16++){
-            flowerArray[counter].update();
-            window.draw(flowerArray[counter].sprite);
-            counter++;
-        }*/ //
-
-        //Draw Wall
-        counter=0;
-        for(iter15=wallArray.begin(); iter15!=wallArray.end(); iter15++){
-            wallArray[counter].update();
-            window.draw(wallArray[counter].sprite);
-            counter++;
-        }
-
         //Draw Player
         window.draw(player.sprite);
 
@@ -643,16 +445,6 @@ int main() {
                 monsterArray.push_back(monster2);
             }
         }
-
-        /*//Random Generate Flower //FIXME: fiori infiniti e posizione
-        counter=50;
-        //for(counter; counter>0; counter++) {
-            flowerRandom = Random::generateRandom0(3);
-            flower.sprite.setTextureRect(sf::IntRect(9 * 32, flowerRandom * 32, 32, 32));
-            flower.rect.setPosition(Random::generateRandom(1530),
-                                    Random::generateRandom(window.getSize().y) + 510);
-            flowerArray.push_back(flower);
-        //}*/
 
         //Draw Monster
         counter=0;

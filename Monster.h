@@ -32,6 +32,7 @@ public:
     void update();
     void updateMovement();
     int loadTexture();
+    void monsterWall();
 };
 
 

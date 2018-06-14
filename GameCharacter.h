@@ -35,6 +35,7 @@ public:
     void update();
     void updateMovement(Direction direction1);
     int loadTexture();
+    void hitWall();
 
 
     GameCharacter(int posx, int posy, int damage, int hp, int maxHP, GCharacters gameCharacter);

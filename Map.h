@@ -7,8 +7,10 @@
 
 #include <vector>
 #include"Tile.h"
-#include "Muro.h"
+#include "Wall.h"
 #include "Enumeration.h"
+#include "GameCharacter.h"
+#include "Monster.h"
 
 
 class Map {
@@ -22,18 +24,18 @@ public:
 
     sf::Texture texture;
     sf::Texture texturewall;
+    sf::Texture texturedoor;
     int loadTexture();
 
     std::vector<Tile*> buffer;
-    std::vector<Muro*> wallBuffer;
-    Tile* door;
+    std::vector<Wall*> wallBuffer;
 
-    void setTile(int w, int h, const bool walkable);
+    void drawWall(sf::RenderWindow *window, GameCharacter *player, std::vector<Monster> monsterArray);
+    void drawGrass(sf::RenderWindow *window);
+    void drawRoad(sf::RenderWindow *window);
     Tile* getTile(int x, int y);
     int getWidth() const;
     int getHeight() const;
-
-    bool levelCompleted;
 
 private:
     int width;

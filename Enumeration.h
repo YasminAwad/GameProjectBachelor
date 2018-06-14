@@ -12,9 +12,7 @@ enum class Direction {up=1, down, left, right, null};
 
 enum class Monsters {bat, rat, boss};
 
-enum class WallTexture {tree, flower};
-
-enum class TileEnum {grass, road, bossRoom, tree};
+enum class TileEnum {grass, road, bossRoom, door, flower1, flower2};
 
 
 

@@ -157,3 +157,22 @@ void Monster::updateMovement() {
         }
     }
 }
+
+void Monster::monsterWall() {
+    if (direction == Direction::up) {
+        canMoveUp = false;
+        rect.move(0, movementSpeed);
+    }
+    else if (direction == Direction::down) {
+        canMoveDown = false;
+        rect.move(0, -movementSpeed);
+    }
+    else if (direction == Direction::left) {
+        canMoveLeft = false;
+        rect.move(movementSpeed, 0);
+    }
+    else if (direction == Direction::right) {
+        canMoveRight = false;
+        rect.move(-movementSpeed, 0);
+    } else {}
+}
