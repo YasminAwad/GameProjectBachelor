@@ -6,20 +6,16 @@
 
 Monster::Monster(int posx, int posy, int damage, int hp,  Monsters monsterClass):
         Character(posx, posy, damage, hp), monsterClass(monsterClass){
-    hp=3;
     rect.setSize(sf::Vector2f(32,32));
     rect.setPosition(posx, posy);
-    //Random::generateRandom(1000)
+    sprite.setTexture(texture);
     switch(monsterClass){
         case Monsters::bat:
-            sprite.setTexture(texture);
+        case Monsters ::boss:
             sprite.setTextureRect(sf::IntRect(0,0,32,32));
             break;
         case Monsters ::rat:
-            sprite.setTexture(texture);
             sprite.setTextureRect(sf::IntRect(0,4*32,32,32));
-            break;
-        case Monsters ::boss:
             break;
     }
 }
@@ -34,8 +30,12 @@ Monster::Monster() {
 }
 
 int Monster::loadTexture() {
-    if(!texture.loadFromFile("../RisorseSprite/monster2.png")){
-        return EXIT_FAILURE;
+    if(monsterClass==Monsters::boss) {
+        if (!texture.loadFromFile("../RisorseSprite/boss.png"))
+            return EXIT_FAILURE;
+    }else{
+        if (!texture.loadFromFile("../RisorseSprite/monster2.png"))
+            return EXIT_FAILURE;
     }
 }
 
@@ -47,13 +47,12 @@ void Monster ::update() {
 
 void Monster::updateMovement() {
 
-    //direction = Random::generateRandom(4);
-
     if (direction == Direction::up) {
         if (canMoveUp == true) {
             rect.move(0, -movementSpeed);
             switch(monsterClass){
                 case Monsters ::bat:
+                case Monsters::boss:
                     sprite.setTextureRect(sf::IntRect(counterWalking * 32, 32 * 3, 32, 32));
                     break;
                 case Monsters ::rat:
@@ -72,6 +71,7 @@ void Monster::updateMovement() {
             rect.move(0, movementSpeed);
             switch(monsterClass){
                 case Monsters ::bat:
+                case Monsters::boss:
                     sprite.setTextureRect(sf::IntRect(counterWalking * 32, 0, 32, 32));
                     break;
                 case Monsters ::rat:
@@ -90,6 +90,7 @@ void Monster::updateMovement() {
             rect.move(-movementSpeed, 0);
             switch(monsterClass){
                 case Monsters ::bat:
+                case Monsters::boss:
                     sprite.setTextureRect(sf::IntRect(counterWalking * 32, 32, 32, 32));
                     break;
                 case Monsters ::rat:
@@ -108,6 +109,7 @@ void Monster::updateMovement() {
             rect.move(movementSpeed, 0);
             switch(monsterClass){
                 case Monsters ::bat:
+                case Monsters::boss:
                     sprite.setTextureRect(sf::IntRect(counterWalking * 32, 32 * 2, 32, 32));
                     break;
                 case Monsters ::rat:
@@ -124,9 +126,8 @@ void Monster::updateMovement() {
     else {} //no movement
 
     counterWalking++;
-    if(counterWalking==2){
+    if(counterWalking==2)
         counterWalking=0;
-    }
 
     counter++;
     if(counter>=movementLenght) {
@@ -162,16 +163,13 @@ void Monster::monsterWall() {
     if (direction == Direction::up) {
         canMoveUp = false;
         rect.move(0, movementSpeed);
-    }
-    else if (direction == Direction::down) {
+    } else if (direction == Direction::down) {
         canMoveDown = false;
         rect.move(0, -movementSpeed);
-    }
-    else if (direction == Direction::left) {
+    } else if (direction == Direction::left) {
         canMoveLeft = false;
         rect.move(movementSpeed, 0);
-    }
-    else if (direction == Direction::right) {
+    } else if (direction == Direction::right) {
         canMoveRight = false;
         rect.move(-movementSpeed, 0);
     } else {}

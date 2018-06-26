@@ -16,24 +16,19 @@
 class Map {
 public:
     TileEnum textureChoice;
+    sf::Texture texture;
+    sf::Texture texturewall;
+    std::vector<Tile*> buffer;
+    std::vector<Wall*> wallBuffer;
+    std::vector<Wall*>::const_iterator iter;
 
     Map(int width, int height, TileEnum textureChoice);
     ~Map();
-
-    bool wakable=true;
-
-    sf::Texture texture;
-    sf::Texture texturewall;
-    sf::Texture texturedoor;
     int loadTexture();
-
-    std::vector<Tile*> buffer;
-    std::vector<Wall*> wallBuffer;
-
-    void drawWall(sf::RenderWindow *window, GameCharacter *player, std::vector<Monster> monsterArray);
+    void drawWall(sf::RenderWindow *window, GameCharacter *player, std::vector<Monster> *monsterArray);
     void drawGrass(sf::RenderWindow *window);
+    void drawFlower(sf::RenderWindow *window);
     void drawRoad(sf::RenderWindow *window);
-    Tile* getTile(int x, int y);
     int getWidth() const;
     int getHeight() const;
 

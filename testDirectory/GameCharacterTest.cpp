@@ -6,7 +6,7 @@
 
 TEST(GameCharacter, GameCharacter_Test) {
     GameCharacter character(0, 0, 5, 50, 50, GCharacters::boy);
-;
+
     ASSERT_EQ(character.rect.getPosition().x, 0);
     ASSERT_EQ(character.rect.getPosition().y, 0);
 }

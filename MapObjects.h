@@ -17,6 +17,7 @@ public:
     TileEnum object;
 
     bool open=false;
+    bool isOpen=false;
 
     int loadTexture();
     void update(GameCharacter *player);

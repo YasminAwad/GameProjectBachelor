@@ -2,9 +2,13 @@
 // Created by Yasmin on 06/06/2018.
 //
 
-/*#include "gtest/gtest.h"
+#include "gtest/gtest.h"
 
 int main(int argc, char** argv){
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
-}*/
+}
+
+TEST(Test, Test1) {
+    ASSERT_TRUE(true);
+}
