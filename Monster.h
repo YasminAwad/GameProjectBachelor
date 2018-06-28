@@ -8,31 +8,40 @@
 #include "Random.h"
 #include "Character.h"
 #include "Enumeration.h"
+#include "Strategy.h"
+#include "GameCharacter.h"
+
+class Strategy;
 
 class Monster: public Character {
 public:
     Monsters monsterClass;
     int movementSpeed=1;
     int attackDamage=5;
-    int counterWalking=0;
+    int counterWalking=1;
     Direction direction;
     int counter=0;
     int movementLenght=200;
-
     bool alive=true;
-    bool canMoveUp=true;
-    bool canMoveDown=true;
-    bool canMoveLeft=true;
-    bool canMoveRight=true;
+    sf::Clock walkingTime;
 
     Monster(int posx, int posy, int damage, int hp,  Monsters monsterClass);
     Monster();
     virtual ~Monster(){}
 
     void update();
-    void updateMovement();
+    void updatePosition();
+    void updateMovement(GameCharacter* player);
     int loadTexture();
     void monsterWall();
+    void setStrategy(Strategy* s);
+    void setHP(int HP) /*override*/;
+    void setAggroed(bool aggroed);
+    Direction getDirection();
+
+private:
+    bool aggroed=false;
+    Strategy* behavior;
 };
 
 

@@ -27,11 +27,6 @@ public:
     bool novaAttack=false;
     bool key=false;
 
-    bool canMoveUp=true;
-    bool canMoveDown=true;
-    bool canMoveLeft=true;
-    bool canMoveRight=true;
-
     void update();
     void updateMovement(Direction direction1);
     int loadTexture();

@@ -17,9 +17,15 @@ public:
     int posx;
     int posy;
 
+    bool canMoveUp=true;
+    bool canMoveDown=true;
+    bool canMoveLeft=true;
+    bool canMoveRight=true;
+
     Character (int posx, int posy, int damage, int hp);
     Character(){} //costruttore di default
     virtual ~Character()=0;
+    int getHP() const;
 };
 
 

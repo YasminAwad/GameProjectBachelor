@@ -22,6 +22,7 @@ public:
         sprite.setTextureRect(sf::IntRect(0, 0, 46, 46));
     }
 
+    bool isWalkable=true;
     int posX;
     int posY;
 };

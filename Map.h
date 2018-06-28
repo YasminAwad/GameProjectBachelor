@@ -20,14 +20,17 @@ public:
     sf::Texture texturewall;
     std::vector<Tile*> buffer;
     std::vector<Wall*> wallBuffer;
-    std::vector<Wall*>::const_iterator iter;
+    std::vector<Wall*>::iterator iter;
 
     Map(int width, int height, TileEnum textureChoice);
     ~Map();
     int loadTexture();
-    void drawWall(sf::RenderWindow *window, GameCharacter *player, std::vector<Monster> *monsterArray);
+    void drawWall(sf::RenderWindow *window, GameCharacter *player, std::vector<Monster> *monsterArray, Monster *boss);
+    void monsterWallCollision(int a, std::vector<Monster> *monsterArray, std::vector<Monster>::iterator counter2);
+    void bossWallCollision(int a, Monster* boss);
     void drawGrass(sf::RenderWindow *window);
-    void drawFlower(sf::RenderWindow *window);
+    void drawFlower1(sf::RenderWindow *window);
+    void drawFlower2(sf::RenderWindow *window);
     void drawRoad(sf::RenderWindow *window);
     int getWidth() const;
     int getHeight() const;

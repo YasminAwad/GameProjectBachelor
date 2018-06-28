@@ -27,6 +27,7 @@ int main() {
     int myRandom;
     int monsterRandom;
     bool start=false;
+    int toll=5;
 
     //create the main window
     sf::RenderWindow window(sf::VideoMode(1000, 1000), "GAME_PROVA3");
@@ -50,8 +51,8 @@ int main() {
     //Music
     Sound sound;
     sound.loadSound();
-    sound.music.play();
-    sound.music.setLoop(true);
+    //sound.music.play(); //FIXME
+    //sound.music.setLoop(true);
 
     //START
     sf::Sprite windowStart;
@@ -75,6 +76,7 @@ int main() {
     gameover.setPosition(-270, -400);
     gameover.setTexture(gameoverTexture);
 
+    std::vector<Wall*>::const_iterator iter66; //FIXME
 
     //Create a graphical text to display
     sf::Font font;
@@ -107,18 +109,28 @@ int main() {
     vector<Monster> monsterArray;
 
     //Monster Object BAT
-    Monster monster1(Random::generateRandom(window.getSize().x), Random::generateRandom(window.getSize().y), 5, 30,
-                     Monsters::bat);
-    monster1.rect.setPosition(400, 200);
-    monsterArray.push_back(monster1);
-    monster1.loadTexture();
+    Monster monster1(100,1300, 5, 30, Monsters::bat);
+   // monster1.rect.setPosition(400, 200);
+    Monster monster2(1300, 1300, 5, 30, Monsters::rat);
 
-    //Monster Object RAT
-    Monster monster2(Random::generateRandom(window.getSize().x), Random::generateRandom(window.getSize().y), 5, 30,
-                     Monsters::rat);
-    monster2.rect.setPosition(400, 200);
-    monsterArray.push_back(monster2);
+    monster1.loadTexture();
     monster2.loadTexture();
+
+    for(int a=1; a<6; a++){
+        monsterArray.push_back(monster1);
+        monsterArray.push_back(monster2);
+    }
+
+    monsterArray[0].rect.setPosition(100, 100);
+    monsterArray[1].rect.setPosition(200,400);
+    monsterArray[2].rect.setPosition(1300,200);
+    monsterArray[3].rect.setPosition(1400,500);
+    monsterArray[4].rect.setPosition(300,1100);
+    monsterArray[5].rect.setPosition(500,1200);
+    monsterArray[6].rect.setPosition(1200,1000);
+    monsterArray[7].rect.setPosition(1000,1100);
+    monsterArray[8].rect.setPosition(100, 1300);
+    monsterArray[9].rect.setPosition(1300, 1300);
 
     //Monster Boss
     Monster boss(window.getPosition().x / 2 + 540, window.getPosition().y / 2 + 100, 20, 200, Monsters::boss);
@@ -179,7 +191,6 @@ int main() {
     grass5.setTexture(grassTexture);
 
     Map grass(65, 65, TileEnum::grass);
-    Map map(48, 48, TileEnum::grass);
     Map wall(48, 48, TileEnum::grass);
     Map road(48, 48, TileEnum::road);
     Map flower(48, 48, TileEnum::flower1);
@@ -187,7 +198,6 @@ int main() {
 
     grass.loadTexture();
     flower.loadTexture();
-    map.loadTexture();
     road.loadTexture();
     wall.loadTexture();
 
@@ -252,27 +262,38 @@ int main() {
                 window.draw(grass3);
                 window.draw(grass4);
                 window.draw(grass5);
-
                 grass.drawGrass(&window);
-                flower.drawFlower(&window);
+                flower.drawFlower1(&window);
                 road.drawRoad(&window);
 
                 //Door
                 if (door1.isOpen == false) {
-                    window.draw(door1.sprite);
+                    if(door2.isOpen == false) {
+                        if (door3.isOpen == false) {
+                            window.draw(door1.sprite);
+                        }
+                    }
                 }
                 if (door1.isOpen == false) {
-                    window.draw(door2.sprite);
+                    if (door2.isOpen == false) {
+                        if (door3.isOpen == false) {
+                            window.draw(door2.sprite);
+                        }
+                    }
                 }
                 if (door1.isOpen == false) {
-                    window.draw(door3.sprite);
+                    if(door2.isOpen == false) {
+                        if (door3.isOpen == false) {
+                            window.draw(door3.sprite);
+                        }
+                    }
                 }
                 door1.update(&player);
                 door2.update(&player);
                 door3.update(&player);
 
                 //Draw Wall
-                // wall.drawWall(&window, &player, &monsterArray);
+                wall.drawWall(&window, &player, &monsterArray, &boss);
 
                 player.update();
 
@@ -387,6 +408,23 @@ int main() {
                     counter++;
                 }
 
+                //Projectiles Collides with Wall
+                counter = 0;
+                for (iter = projectileArray.begin(); iter != projectileArray.end(); iter++) {
+                    counter2 = 0;
+                    for (wall.iter = wall.wallBuffer.begin(); wall.iter != wall.wallBuffer.end(); wall.iter++) {
+                        if (projectileArray[counter].rect.getGlobalBounds().intersects(
+                                wall.wallBuffer[counter2]->rect.getGlobalBounds())) {
+                            if (wall.wallBuffer[counter2]->isWalkable == false) {
+                                projectileArray[counter].destroy = true;
+                                sound.soundCollision.play();
+                            }
+                        }
+                        counter2++;
+                    }
+                    counter++;
+                }
+
                 //Monster Collides with Player (player takes damage)
                 if (elapsed2.asSeconds() >= 0.5) {
                     clock2.restart();
@@ -418,18 +456,42 @@ int main() {
                     }
                 }
 
-                /*  //Monster Collides with Wall
+                  //Monster Collides with Wall
                   counter2=0;
-                  for (iter4 = monsterArray.begin(); iter4 != monsterArray.end(); iter4++) {
+                  for (int mon=0; mon<30; mon++) {
                       counter = 0;
                       for (wall.iter = wall.wallBuffer.begin(); wall.iter != wall.wallBuffer.end(); wall.iter++) {
-                          if ( monsterArray[counter2].rect.getGlobalBounds().intersects(wall.wallBuffer[counter]->rect.getGlobalBounds())) {
-                              monsterArray[counter].monsterWall();
+                          if(wall.wallBuffer[counter]->isWalkable=false) {
+                              if (abs(static_cast<int>(wall.wallBuffer[counter]->rect.getPosition().y + 32 -
+                                      (monsterArray.begin() + mon)->rect.getPosition().y)) < toll &&
+                                  abs(static_cast<int>(wall.wallBuffer[counter]->rect.getPosition().x -
+                                          (monsterArray.begin() + mon)->rect.getPosition().x)) < 32 - toll) {
+                                  (monsterArray.begin() + mon)->canMoveUp = false;
+                              }
+                              if (abs(static_cast<int>(wall.wallBuffer[counter]->rect.getPosition().y - 32 -
+                                      (monsterArray.begin() + mon)->rect.getPosition().y )) < toll &&
+                                  abs(static_cast<int>(wall.wallBuffer[counter]->rect.getPosition().x -
+                                                       monsterArray[counter2].rect.getPosition().x)) < 32 - toll) {
+                                  (monsterArray.begin() + mon)->canMoveDown = false;
+                              }
+
+                              if (abs(static_cast<int>(wall.wallBuffer[counter]->rect.getPosition().y -
+                                      (monsterArray.begin() + mon)->rect.getPosition().y )) < 32 - toll &&
+                                  abs(static_cast<int>(wall.wallBuffer[counter]->rect.getPosition().x + 32 -
+                                          (monsterArray.begin() + mon)->rect.getPosition().x)) < toll) {
+                                  (monsterArray.begin() + mon)->canMoveLeft = false;
+                              }
+                              if (abs(static_cast<int>(wall.wallBuffer[counter]->rect.getPosition().y -
+                                      (monsterArray.begin() + mon)->rect.getPosition().y )) < 32 - toll &&
+                                  abs(static_cast<int>(wall.wallBuffer[counter]->rect.getPosition().x - 32 -
+                                          (monsterArray.begin() + mon)->rect.getPosition().x)) < toll) {
+                                  (monsterArray.begin() + mon)->canMoveRight = false;
+                              }
                           }
                           counter++;
                       }
                       counter2++;
-                  }*/
+                  }
 
                 //Player Collides with PickUp Item
                 counter = 0;
@@ -592,12 +654,12 @@ int main() {
                 //Draw Monster
                 counter = 0;
                 for (iter4 = monsterArray.begin(); iter4 != monsterArray.end(); iter4++) {
-                    monsterArray[counter].updateMovement();
+                    monsterArray[counter].updateMovement(&player);
                     monsterArray[counter].update();
                     window.draw(monsterArray[counter].sprite);
                     counter++;
                 }
-                boss.updateMovement();
+                boss.updateMovement(&player);
                 boss.update();
                 window.draw(boss.sprite);
 
@@ -644,4 +706,3 @@ int main() {
     return EXIT_SUCCESS;
 
 }
-
