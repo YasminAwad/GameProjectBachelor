@@ -52,12 +52,12 @@ void ChaseHero::movementBehavior(GameCharacter* player, Monster* monster) {
 }
 
 void TurnAround::movementBehavior(GameCharacter* player, Monster* monster) {
-    if (monster->walkingTime.getElapsedTime().asSeconds() >= 0.5) { //FIXME
+    if (monster->walkingTime.getElapsedTime().asSeconds() >= 0.5) {
         //Changes facing direction
         monster->counter++;
         if(monster->counter>=monster->movementLenght) {
             monster->counter = 0;
-            int myRandom = Random::generateRandom(10);
+            int myRandom = Random::generateRandom(5);
             switch(myRandom){
                 case 1:
                     monster->direction = Direction::up;
@@ -72,11 +72,6 @@ void TurnAround::movementBehavior(GameCharacter* player, Monster* monster) {
                     monster->direction = Direction::right;
                     break;
                 case 5:
-                case 6:
-                case 7:
-                case 8:
-                case 9:
-                case 10:
                     monster->direction = Direction::null;
                     break;
 
@@ -91,11 +86,11 @@ void TurnAround::movementBehavior(GameCharacter* player, Monster* monster) {
 }
 
 void Flee::movementBehavior(GameCharacter* player, Monster* monster) {
-    monster->setAggroed(false); //FIXME: cos'è
+    monster->setAggroed(false);
 
     if(monster->walkingTime.getElapsedTime().asSeconds() < 0.5) {
-        float Ydiff = monster->rect.getPosition().y - monster->rect.getPosition().y;
-        float Xdiff = monster->rect.getPosition().x - monster->rect.getPosition().x;
+        float Ydiff = player->rect.getPosition().y - monster->rect.getPosition().y;
+        float Xdiff = player->rect.getPosition().x - monster->rect.getPosition().x;
 
         if (abs(static_cast<int>(Ydiff)) < Xdiff && Xdiff > 0) {
             monster->direction= Direction ::left;

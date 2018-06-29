@@ -8,7 +8,7 @@
 #include "TextDisplay.h"
 #include "PickUp.h"
 #include "Wall.h"
-#include "Sound.h"
+//#include "Sound.h"
 #include "Map.h"
 #include "MapObjects.h"
 
@@ -49,8 +49,8 @@ int main() {
     window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
     //Music
-    Sound sound;
-    sound.loadSound();
+    //Sound sound;
+    //sound.loadSound();
     //sound.music.play(); //FIXME
     //sound.music.setLoop(true);
 
@@ -109,9 +109,9 @@ int main() {
     vector<Monster> monsterArray;
 
     //Monster Object BAT
-    Monster monster1(100,1300, 5, 30, Monsters::bat);
+    Monster monster1(100,1300, 5, 35, Monsters::bat);
    // monster1.rect.setPosition(400, 200);
-    Monster monster2(1300, 1300, 5, 30, Monsters::rat);
+    Monster monster2(1300, 1300, 5, 35, Monsters::rat);
 
     monster1.loadTexture();
     monster2.loadTexture();
@@ -293,7 +293,7 @@ int main() {
                 door3.update(&player);
 
                 //Draw Wall
-                wall.drawWall(&window, &player, &monsterArray, &boss);
+                wall.drawWall(&window, &player);
 
                 player.update();
 
@@ -312,7 +312,7 @@ int main() {
                     clock.restart();
                     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 
-                        sound.soundShot.play();
+                        //sound.soundShot.play();
 
                         //PowerUp Attack
                         if (player.powerUpLevel == true) {
@@ -372,7 +372,7 @@ int main() {
                     counter2 = 0;
                     if (projectileArray[counter].rect.getGlobalBounds().intersects(boss.rect.getGlobalBounds())) {
                         projectileArray[counter].destroy = true;
-                        sound.soundCollision.play();
+                        //sound.soundCollision.play();
                         //Text Display
                         textdisplay1.text.setString(to_string(projectileArray[counter].attackDamage));
                         textdisplay1.text.setPosition(boss.rect.getPosition().x + boss.rect.getSize().x / 2,
@@ -388,7 +388,7 @@ int main() {
                                 monsterArray[counter2].rect.getGlobalBounds())) {
                             projectileArray[counter].destroy = true;
 
-                            sound.soundCollision.play();
+                            //sound.soundCollision.play();
 
                             //Text Display
                             textdisplay1.text.setString(to_string(projectileArray[counter].attackDamage));
@@ -400,6 +400,7 @@ int main() {
 
                             monsterArray[counter2].hp -= projectileArray[counter].attackDamage;
 
+                            monsterArray[counter2].setFlee();
                             if (monsterArray[counter2].hp <= 0)
                                 monsterArray[counter2].alive = false;
                         }
@@ -417,7 +418,7 @@ int main() {
                                 wall.wallBuffer[counter2]->rect.getGlobalBounds())) {
                             if (wall.wallBuffer[counter2]->isWalkable == false) {
                                 projectileArray[counter].destroy = true;
-                                sound.soundCollision.play();
+                                //sound.soundCollision.play();
                             }
                         }
                         counter2++;
@@ -425,12 +426,40 @@ int main() {
                     counter++;
                 }
 
+                //Monster Collides with Wall
+                counter = 0;
+                for (iter4 = monsterArray.begin(); iter4 != monsterArray.end(); iter4++) {
+                    counter2 = 0;
+                    for (wall.iter = wall.wallBuffer.begin(); wall.iter != wall.wallBuffer.end(); wall.iter++) {
+                        if (monsterArray[counter].rect.getGlobalBounds().intersects(
+                                wall.wallBuffer[counter2]->rect.getGlobalBounds())) {
+                            if (wall.wallBuffer[counter2]->isWalkable == false) {
+                                monsterArray[counter].monsterWall();
+                                //sound.soundCollision.play();
+                            }
+                        }
+                        counter2++;
+                    }
+                    counter++;
+                }
+
+                //Boss Collides with Wall
+                counter2=0;
+                for (wall.iter = wall.wallBuffer.begin(); wall.iter != wall.wallBuffer.end(); wall.iter++) {
+                    if (boss.rect.getGlobalBounds().intersects(wall.wallBuffer[counter2]->rect.getGlobalBounds())) {
+                        if (wall.wallBuffer[counter2]->isWalkable == false) {
+                            boss.monsterWall();
+                        }
+                    }
+                    counter2++;
+                }
+
                 //Monster Collides with Player (player takes damage)
                 if (elapsed2.asSeconds() >= 0.5) {
                     clock2.restart();
                     counter = 0;
                     if (player.rect.getGlobalBounds().intersects(boss.rect.getGlobalBounds())) {
-                        sound.soundPDamage.play();
+                        //sound.soundPDamage.play();
                         //Text Display
                         textdisplay1.text.setString(to_string(boss.attackDamage));
                         textdisplay1.text.setPosition(player.rect.getPosition().x + player.rect.getSize().x / 2,
@@ -442,7 +471,7 @@ int main() {
                     }
                     for (iter4 = monsterArray.begin(); iter4 != monsterArray.end(); iter4++) {
                         if (player.rect.getGlobalBounds().intersects(monsterArray[counter].rect.getGlobalBounds())) {
-                            sound.soundPDamage.play();
+                            //sound.soundPDamage.play();
                             //Text Display
                             textdisplay1.text.setString(to_string(monsterArray[counter].attackDamage));
                             textdisplay1.text.setPosition(player.rect.getPosition().x + player.rect.getSize().x / 2,
@@ -456,50 +485,13 @@ int main() {
                     }
                 }
 
-                  //Monster Collides with Wall
-                  counter2=0;
-                  for (int mon=0; mon<30; mon++) {
-                      counter = 0;
-                      for (wall.iter = wall.wallBuffer.begin(); wall.iter != wall.wallBuffer.end(); wall.iter++) {
-                          if(wall.wallBuffer[counter]->isWalkable=false) {
-                              if (abs(static_cast<int>(wall.wallBuffer[counter]->rect.getPosition().y + 32 -
-                                      (monsterArray.begin() + mon)->rect.getPosition().y)) < toll &&
-                                  abs(static_cast<int>(wall.wallBuffer[counter]->rect.getPosition().x -
-                                          (monsterArray.begin() + mon)->rect.getPosition().x)) < 32 - toll) {
-                                  (monsterArray.begin() + mon)->canMoveUp = false;
-                              }
-                              if (abs(static_cast<int>(wall.wallBuffer[counter]->rect.getPosition().y - 32 -
-                                      (monsterArray.begin() + mon)->rect.getPosition().y )) < toll &&
-                                  abs(static_cast<int>(wall.wallBuffer[counter]->rect.getPosition().x -
-                                                       monsterArray[counter2].rect.getPosition().x)) < 32 - toll) {
-                                  (monsterArray.begin() + mon)->canMoveDown = false;
-                              }
-
-                              if (abs(static_cast<int>(wall.wallBuffer[counter]->rect.getPosition().y -
-                                      (monsterArray.begin() + mon)->rect.getPosition().y )) < 32 - toll &&
-                                  abs(static_cast<int>(wall.wallBuffer[counter]->rect.getPosition().x + 32 -
-                                          (monsterArray.begin() + mon)->rect.getPosition().x)) < toll) {
-                                  (monsterArray.begin() + mon)->canMoveLeft = false;
-                              }
-                              if (abs(static_cast<int>(wall.wallBuffer[counter]->rect.getPosition().y -
-                                      (monsterArray.begin() + mon)->rect.getPosition().y )) < 32 - toll &&
-                                  abs(static_cast<int>(wall.wallBuffer[counter]->rect.getPosition().x - 32 -
-                                          (monsterArray.begin() + mon)->rect.getPosition().x)) < toll) {
-                                  (monsterArray.begin() + mon)->canMoveRight = false;
-                              }
-                          }
-                          counter++;
-                      }
-                      counter2++;
-                  }
-
                 //Player Collides with PickUp Item
                 counter = 0;
                 for (iter11 = pickupArray.begin(); iter11 != pickupArray.end(); iter11++) {
                     if (player.rect.getGlobalBounds().intersects(pickupArray[counter].rect.getGlobalBounds())) {
                         if (pickupArray[counter].isCoin == true) {
                             //sound.soundCoin.setVolume(100);
-                            sound.soundCoin.play();
+                            //sound.soundCoin.play();
                             player.wallet += pickupArray[counter].coinValue;
                             pickupArray[counter].destroy = true;
                         }
@@ -507,7 +499,7 @@ int main() {
                             if (player.wallet >= pickupArray[counter].cost) {
                                 player.wallet -= pickupArray[counter].cost;
                                 if (pickupArray[counter].isKey == true) {
-                                    sound.soundCoin.play();
+                                    //sound.soundCoin.play();
                                     player.key = true;
                                     door1.open = true;
                                     door2.open = true;
@@ -518,20 +510,20 @@ int main() {
                             }
                         }
                         if (pickupArray[counter].isPowerUp == true) {
-                            sound.soundPower.play();
+                            //sound.soundPower.play();
                             player.powerUpLevel = true;
                             player.novaAttack = false;
                             pickupArray[counter].destroy = true;
                         }
                         if (pickupArray[counter].isNovaAttack == true) {
-                            sound.soundPower.play();
+                            //sound.soundPower.play();
                             player.powerUpLevel = false;
                             player.novaAttack = true;
                             pickupArray[counter].destroy = true;
                         }
                         if (pickupArray[counter].isFood == true) {
-                            sound.soundCoin.setVolume(100);
-                            sound.soundCoin.play();
+                            //sound.soundCoin.setVolume(100);
+                           // sound.soundCoin.play();
                             player.hp += pickupArray[counter].foodValue;
                             pickupArray[counter].destroy = true;
                         }

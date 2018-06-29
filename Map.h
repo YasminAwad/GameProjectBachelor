@@ -25,9 +25,7 @@ public:
     Map(int width, int height, TileEnum textureChoice);
     ~Map();
     int loadTexture();
-    void drawWall(sf::RenderWindow *window, GameCharacter *player, std::vector<Monster> *monsterArray, Monster *boss);
-    void monsterWallCollision(int a, std::vector<Monster> *monsterArray, std::vector<Monster>::iterator counter2);
-    void bossWallCollision(int a, Monster* boss);
+    void drawWall(sf::RenderWindow *window, GameCharacter *player);
     void drawGrass(sf::RenderWindow *window);
     void drawFlower1(sf::RenderWindow *window);
     void drawFlower2(sf::RenderWindow *window);

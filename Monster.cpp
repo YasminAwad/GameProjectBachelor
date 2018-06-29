@@ -155,9 +155,8 @@ void Monster::setAggroed(bool aggroed){
     walkingTime.restart();
 }
 
-void Monster::setHP(int HP) {
-    //GameCharacter::setHP(HP);
-    if(getHP() < 10);
+void Monster::setFlee() {
+    if(hp < 10);
         setStrategy(new Flee());
 }
 

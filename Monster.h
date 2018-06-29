@@ -35,7 +35,7 @@ public:
     int loadTexture();
     void monsterWall();
     void setStrategy(Strategy* s);
-    void setHP(int HP) /*override*/;
+    void setFlee();
     void setAggroed(bool aggroed);
     Direction getDirection();
 
