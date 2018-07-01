@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Entity.h"
+#include "Monster.h"
 
 class PickUp:public Entity {
 public:
@@ -25,6 +26,12 @@ public:
     virtual ~PickUp(){}
     void update();
     int loadTexture();
+    void dropCoin(std::vector<Monster> monsterArray, int counter);
+    void dropFood(std::vector<Monster> monsterArray, int counter);
+    void dropPowerUp(std::vector<Monster> monsterArray, int counter);
+    void dropNovaAttack(std::vector<Monster> monsterArray, int counter);
+
+    int drop(PickUp pickUp1, std::vector<PickUp>* pickupArray, std::vector<Monster> monsterArray, int counter, int myRandom);
 
 };
 

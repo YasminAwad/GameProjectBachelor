@@ -75,7 +75,8 @@ void Map::drawFlower1(sf::RenderWindow *window){ //FIXME
 }
 
 void Map::drawFlower2(sf::RenderWindow *window) {
-
+    for(int i=0; i<48; i++)
+        window->draw(buffer[i*30 + 100]->sprite);
 }
 
 void Map::drawRoad(sf::RenderWindow *window){

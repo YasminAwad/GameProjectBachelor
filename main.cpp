@@ -77,8 +77,8 @@ again:
     sf::Text victoryText("VICTORY", font2, 150);
     victoryText.setPosition(-330, -150);
     sf::Text textGil("Gil", font, 25);
-    textGil.setPosition(0, 0);
     sf::Text textHP("HP", font, 25);
+    sf::Text textIstruction("I:istruction", font, 25);
 
     //Player
     GameCharacter player(window.getPosition().x / 2 + 540, window.getPosition().y / 2 + 1400, 10, 50, 50, GCharacters::boy);
@@ -174,10 +174,12 @@ again:
     Map grass(65, 65, TileEnum::grass);
     Map wall(48, 48, TileEnum::grass);
     Map road(48, 48, TileEnum::road);
-    Map flower(48, 48, TileEnum::flower1);
+    Map flower1(48, 48, TileEnum::flower1);
+    Map flower2(48, 48, TileEnum::flower2);
     Map bossRoom(48, 48, TileEnum::bossRoom);
     grass.loadTexture();
-    flower.loadTexture();
+    flower1.loadTexture();
+    flower2.loadTexture();
     road.loadTexture();
     wall.loadTexture();
 
@@ -267,7 +269,8 @@ again:
                     window.draw(grass4);
                     window.draw(grass5);
                     grass.drawGrass(&window);
-                    flower.drawFlower1(&window);
+                    flower1.drawFlower1(&window);
+                    flower2.drawFlower2(&window);
                     road.drawRoad(&window);
 
                     //Door
@@ -548,50 +551,22 @@ again:
                                 monsterArray.push_back(monster1);
                             if (monsterRandom == 2)
                                 monsterArray.push_back(monster2);
-                            //Drop Coin
-                            if (myRandom == 1) {
-                                pickup1.isCoin = true;
-                                pickup1.isPowerUp = false;
-                                pickup1.isNovaAttack = false;
-                                pickup1.isFood = false;
-                                pickup1.sprite.setTextureRect(sf::IntRect(13 * 24, 12 * 24, 24, 24));
-                                pickup1.rect.setPosition(monsterArray[counter].rect.getPosition());
-                                pickupArray.push_back((pickup1));
-                            }
 
-                            //Drop Food
-                            if (myRandom == 2) {
-                                pickup1.isFood = true;
-                                pickup1.isNovaAttack = false;
-                                pickup1.isPowerUp = false;
-                                pickup1.isCoin = false;
-                                food = Random::generateRandom0(10);
-                                pickup1.sprite.setTextureRect(sf::IntRect(food * 24, 10 * 24, 24, 24));
-                                pickup1.rect.setPosition(monsterArray[counter].rect.getPosition());
-                                pickupArray.push_back(pickup1);
+                            switch(myRandom){
+                                case 1: //Drop Coin
+                                    pickup1.dropCoin(monsterArray, counter);
+                                    break;
+                                case 2: //Drop Food
+                                    pickup1.dropFood(monsterArray, counter);
+                                    break;
+                                case 3: //Drop PowerUp
+                                    pickup1.dropPowerUp(monsterArray, counter);
+                                    break;
+                                case 4: //Drop Nova Attack
+                                    pickup1.dropNovaAttack(monsterArray, counter);
+                                    break;
                             }
-
-                            //Drop PowerUp
-                            if (myRandom == 3) {
-                                pickup1.isPowerUp = true;
-                                pickup1.isCoin = false;
-                                pickup1.isFood = false;
-                                pickup1.isNovaAttack = false;
-                                pickup1.sprite.setTextureRect(sf::IntRect(4 * 24, 13 * 24, 24, 24));
-                                pickup1.rect.setPosition(monsterArray[counter].rect.getPosition());
-                                pickupArray.push_back(pickup1);
-                            }
-
-                            //Drop NovaAttack
-                            if (myRandom == 4) {
-                                pickup1.isNovaAttack = true;
-                                pickup1.isPowerUp = false;
-                                pickup1.isCoin = false;
-                                pickup1.isFood = false;
-                                pickup1.sprite.setTextureRect(sf::IntRect(24, 13 * 24, 24, 24));
-                                pickup1.rect.setPosition(monsterArray[counter].rect.getPosition());
-                                pickupArray.push_back(pickup1);
-                            }
+                            pickupArray.push_back((pickup1));
 
                             monsterArray.erase(iter4);
                             break;
@@ -689,9 +664,14 @@ again:
 
                     //Draw Gil Text
                     textGil.setPosition(player.rect.getPosition().x - window.getSize().x / 2+10,
-                                        player.rect.getPosition().y - window.getSize().y / 2 + 50+10);
+                                        player.rect.getPosition().y - window.getSize().y / 2 + 60);
                     textGil.setString("Coin:" + to_string(player.wallet));
                     window.draw(textGil);
+
+                    //Draw Istruction Text
+                    textIstruction.setPosition(player.rect.getPosition().x - window.getSize().x / 2+10,
+                                       player.rect.getPosition().y - window.getSize().y / 2+110);
+                    window.draw(textIstruction);
 
                     istruction.setColor(sf::Color::Black);
                     if (sf::Keyboard::isKeyPressed(sf::Keyboard::I)) {
