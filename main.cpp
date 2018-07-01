@@ -24,11 +24,12 @@ again:
     sf::Clock clock;
     sf::Clock clock2;
     sf::Clock clock3;
-    int food;
     int myRandom;
     int monsterRandom;
     bool start=false;
     bool choiceWindow=false;
+    bool musicVictory=false;
+    bool musicGameOver=false;
 
     //create the main window
     sf::RenderWindow window(sf::VideoMode(1000, 1000), "GAME_PROVA3");
@@ -99,7 +100,7 @@ again:
     monster2.loadTexture();
 
     //MonsterFactory
-    for(int a=1; a<6; a++){
+    for(int size=1; size<6; size++){
         monsterArray.push_back(monster1);
         monsterArray.push_back(monster2);
     }
@@ -238,22 +239,31 @@ again:
 
             } else {
                 if (player.hp <= 0) {
+                    sound.music.stop();
                     view1.setCenter(0, 0);
                     window.setView(view1);
                     window.draw(display.end.sprite);
                     textStart.setPosition(-400, 100);
                     window.draw(textStart);
+                    if(musicGameOver==false) {
+                        sound.soundGameOver.play();
+                        musicGameOver = true;
+                    }
                     if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace)) {
                         goto again;
                     }
                 } else if (boss.hp <= 0) {
-                    //sound.music.stop
+                    sound.music.stop();
                     view1.setCenter(0, 0);
                     window.setView(view1);
                     window.draw(display.windowStart.sprite);
                     window.draw(victoryText);
                     textStart.setPosition(-400, 100);
                     window.draw(textStart);
+                    if(musicVictory==false) {
+                        sound.soundVictory.play();
+                        musicVictory = true;
+                    }
                     if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace)) {
                         goto again;
                     }
@@ -261,7 +271,6 @@ again:
 
                     sf::Time elapsed1 = clock.getElapsedTime();
                     sf::Time elapsed2 = clock2.getElapsedTime();
-                    sf::Time elapsed3 = clock3.getElapsedTime();
 
                     window.draw(grass1);
                     window.draw(grass2);

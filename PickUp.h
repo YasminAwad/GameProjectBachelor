@@ -31,8 +31,6 @@ public:
     void dropPowerUp(std::vector<Monster> monsterArray, int counter);
     void dropNovaAttack(std::vector<Monster> monsterArray, int counter);
 
-    int drop(PickUp pickUp1, std::vector<PickUp>* pickupArray, std::vector<Monster> monsterArray, int counter, int myRandom);
-
 };
 
 

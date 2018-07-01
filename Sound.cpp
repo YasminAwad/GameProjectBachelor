@@ -9,6 +9,14 @@ int Sound::loadSound() {
     //Music
     if(!music.openFromFile("../RisorseMusic/church.ogg")){ return EXIT_FAILURE;}
 
+    //Victory
+    if(!bufferVictory.loadFromFile("../RisorseMusic/victoryFanfare.ogg")){ return EXIT_FAILURE; }
+    soundVictory.setBuffer(bufferVictory);
+
+    //GameOver
+    if(!bufferGameOver.loadFromFile("../RisorseMusic/gameOverSong.ogg")){ return EXIT_FAILURE; }
+    soundGameOver.setBuffer(bufferGameOver);
+
     //Shot
     if(!bufferShot.loadFromFile("../RisorseMusic/Heal.ogg")){ return EXIT_FAILURE; }
     soundShot.setBuffer(bufferShot);

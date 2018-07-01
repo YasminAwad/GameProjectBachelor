@@ -59,29 +59,3 @@ void PickUp::dropNovaAttack(std::vector<Monster> monsterArray, int counter){
     sprite.setTextureRect(sf::IntRect(24, 13 * 24, 24, 24));
     rect.setPosition(monsterArray[counter].rect.getPosition());
 }
-
-int PickUp::drop(PickUp pickUp1, std::vector<PickUp>* pickupArray, std::vector<Monster> monsterArray, int counter, int myRandom){
-    //Drop Coin
-    if (myRandom == 1) {
-        dropCoin(monsterArray, counter);
-        pickupArray->push_back((pickUp1));
-    }
-
-    //Drop Food
-    if (myRandom == 2) {
-        dropFood(monsterArray, counter);
-        pickupArray->push_back(pickUp1);
-    }
-
-    //Drop PowerUp
-    if (myRandom == 3) {
-        dropPowerUp(monsterArray, counter);
-        pickupArray->push_back(pickUp1);
-    }
-
-    //Drop NovaAttack
-    if (myRandom == 4) {
-        dropNovaAttack(monsterArray, counter);
-        pickupArray->push_back(pickUp1);
-    }
-}

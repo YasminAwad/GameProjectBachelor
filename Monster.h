@@ -38,8 +38,7 @@ public:
     void setFlee();
     void setAggroed(bool aggroed);
     void setMovementSpeed(int movementSpeed);
-    Direction getDirection();
-    int getHP();
+    bool getAggroed();
 
 private:
     bool aggroed=false;

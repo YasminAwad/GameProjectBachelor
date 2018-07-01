@@ -22,12 +22,12 @@ Monster::Monster(int posx, int posy, int damage, int hp,  Monsters monsterClass)
 }
 
 Monster::Monster() {
-    hp=3;
+   /* hp=3;
     rect.setSize(sf::Vector2f(32,32));
     rect.setPosition(Random::generateRandom(1000), Random::generateRandom(1000));
 
     sprite.setTexture(texture);
-    sprite.setTextureRect(sf::IntRect(0,0,32,32));
+    sprite.setTextureRect(sf::IntRect(0,0,32,32));*/
 }
 
 int Monster::loadTexture() {
@@ -163,14 +163,10 @@ void Monster::setStrategy(Strategy* s){
     behavior= s;
 }
 
-Direction Monster::getDirection(){
-    return direction;
-}
-
 void Monster::setMovementSpeed(int movementSpeed){
     this->movementSpeed=movementSpeed;
 }
 
-int Monster::getHP(){
-    return hp;
+bool Monster::getAggroed(){
+    return aggroed;
 }

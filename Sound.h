@@ -11,6 +11,12 @@ class Sound {
 public:
     sf::Music music;
 
+    sf::SoundBuffer bufferVictory;
+    sf::Sound soundVictory;
+
+    sf::SoundBuffer bufferGameOver;
+    sf::Sound soundGameOver;
+
     sf::SoundBuffer bufferShot;
     sf::Sound soundShot;
 
