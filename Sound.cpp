@@ -6,10 +6,10 @@
 
 int Sound::loadSound() {
 
-    //general
-    if(!music.openFromFile("../RisorseMusic/LostWoods.ogg")){ return EXIT_FAILURE;}
+    //Music
+    if(!music.openFromFile("../RisorseMusic/church.ogg")){ return EXIT_FAILURE;}
 
-    //shot
+    //Shot
     if(!bufferShot.loadFromFile("../RisorseMusic/Heal.ogg")){ return EXIT_FAILURE; }
     soundShot.setBuffer(bufferShot);
 

@@ -80,9 +80,11 @@ void TurnAround::movementBehavior(GameCharacter* player, Monster* monster) {
         }
     }
 
-    if(abs(static_cast<int>(player->rect.getPosition().x - monster->rect.getPosition().x)) < 50 &&
-       abs(static_cast<int>(player->rect.getPosition().y - monster->rect.getPosition().y)) < 50)
+    if(abs(static_cast<int>(player->rect.getPosition().x - monster->rect.getPosition().x)) < 100 &&
+       abs(static_cast<int>(player->rect.getPosition().y - monster->rect.getPosition().y)) < 100) {
         monster->setAggroed(true);
+        monster->setMovementSpeed(4);
+    }
 }
 
 void Flee::movementBehavior(GameCharacter* player, Monster* monster) {

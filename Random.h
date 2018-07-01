@@ -11,7 +11,6 @@ class Random {
 public:
     static int generateRandom(int max); // 1 - max
     static int generateRandom0(int max); // 0 - max
-    static bool generateRandomBool();
 
 };
 

@@ -50,8 +50,5 @@ void Projectile::update(){
         counterAnimation=0;
     }
 
-    //sprite set at rect
     sprite.setPosition(rect.getPosition());
 }
-
-//Projectile::~Projectile() {}

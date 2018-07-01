@@ -37,7 +37,9 @@ public:
     void setStrategy(Strategy* s);
     void setFlee();
     void setAggroed(bool aggroed);
+    void setMovementSpeed(int movementSpeed);
     Direction getDirection();
+    int getHP();
 
 private:
     bool aggroed=false;

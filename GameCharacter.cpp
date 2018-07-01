@@ -133,3 +133,24 @@ int GameCharacter::loadTexture() {
                 return EXIT_FAILURE;
     }
 }
+
+void GameCharacter::setmaxHP(int maxHP) {
+    this->maxHP=maxHP;
+}
+
+int GameCharacter::getmaxHP() const {
+    return maxHP;
+}
+
+void GameCharacter::setHP(int hp) {
+    this->hp=hp;
+    if(this->hp<0)
+        this->hp=0;
+    if(this->hp>maxHP)
+        this->hp=maxHP;
+}
+
+void GameCharacter::heal(int hp){
+    setHP(getHP()+hp);
+}
+

@@ -11,14 +11,13 @@
 #include <SFML/Graphics.hpp>
 
 class Entity {
-    //Physical Object
 public:
     sf::RectangleShape rect;
     sf::Sprite sprite;
     sf::Texture texture;
     sf::Text text;
 
-    virtual ~Entity() = 0;
+    virtual ~Entity();
 };
 
 

@@ -40,7 +40,5 @@ void MapObjects::update(GameCharacter *player){
     }
     if(player->rect.getGlobalBounds().intersects(rect.getGlobalBounds()) & open==true){
         isOpen=true;
-        //delete sprite;
-        //delete rect;
     }
 }

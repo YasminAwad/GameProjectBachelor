@@ -4,7 +4,7 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 set(EXECUTABLE_NAME runAllTests)
 
-set(TEST_SOURCE_FILES runAllTests.cpp MapTest.cpp GameCharacterTest.cpp)
+set(TEST_SOURCE_FILES runAllTests.cpp MapTest.cpp GameCharacterTest.cpp MonsterTest.cpp)
 add_executable(${EXECUTABLE_NAME} ${TEST_SOURCE_FILES})
 target_link_libraries(${EXECUTABLE_NAME} gtest gtest_main core)
 

@@ -23,8 +23,8 @@ public:
     virtual ~Projectile(){}
 
     void update();
-    void updateMovement();
     int loadTexture();
+    void PowerUp();
 };
 
 

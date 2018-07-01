@@ -23,9 +23,12 @@ public:
     bool canMoveRight=true;
 
     Character (int posx, int posy, int damage, int hp);
-    Character(){} //costruttore di default
+    Character(){}
     virtual ~Character()=0;
+
     int getHP() const;
+    int getDamage() const;
+    void setDamage(int damage);
 };
 
 

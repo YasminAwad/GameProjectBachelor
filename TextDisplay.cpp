@@ -5,9 +5,8 @@
 #include "TextDisplay.h"
 
 TextDisplay::TextDisplay() {
-    text.setColor(sf::Color::Red); //???
+    text.setColor(sf::Color::Red);
     text.setCharacterSize(30);
-    //text.setPosition(0,0);
     text.setString(myString);
 }
 
@@ -20,5 +19,3 @@ void TextDisplay::update() {
         destroy=true;
     }
 }
-
-//TextDisplay::~TextDisplay() {}

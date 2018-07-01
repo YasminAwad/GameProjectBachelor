@@ -21,7 +21,6 @@ public:
     float movementSpeed=6;
     int counterWalking=0;
     GCharacters gameCharacter;
-    string name="name";
     int wallet=0;
     bool powerUpLevel=false;
     bool novaAttack=false;
@@ -31,11 +30,14 @@ public:
     void updateMovement(Direction direction1);
     int loadTexture();
     void hitWall();
+    int getmaxHP() const;
+    void setmaxHP(int maxHP);
+    void setHP(int hp);
+    void heal(int hp);
 
 
     GameCharacter(int posx, int posy, int damage, int hp, int maxHP, GCharacters gameCharacter);
     GameCharacter(){}
-
     virtual ~GameCharacter(){}
 
 };

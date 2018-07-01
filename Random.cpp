@@ -19,12 +19,3 @@ int Random::generateRandom0(int max) {
 
     return myRandom;
 }
-
-bool Random::generateRandomBool() {
-    int randomNumber=rand();
-    float myRandom=(randomNumber%2)+1;
-    if(myRandom==1)
-        return true;
-    else
-        return false;
-}

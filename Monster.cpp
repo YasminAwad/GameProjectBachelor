@@ -47,9 +47,7 @@ void Monster ::update() {
 }
 
 void Monster ::updatePosition() {
-    sprite.setPosition(rect.getPosition());
-    text.setPosition(rect.getPosition().x - rect.getSize().x/2, rect.getPosition().y - rect.getSize().y/2 + 5);
-
+    update();
     counterWalking++;
     if(counterWalking>=2)
         counterWalking=0;
@@ -167,4 +165,12 @@ void Monster::setStrategy(Strategy* s){
 
 Direction Monster::getDirection(){
     return direction;
+}
+
+void Monster::setMovementSpeed(int movementSpeed){
+    this->movementSpeed=movementSpeed;
+}
+
+int Monster::getHP(){
+    return hp;
 }
