@@ -27,22 +27,20 @@ GameCharacter::GameCharacter(int posx, int posy, int damage, int hp, int maxHP, 
 
 void GameCharacter ::update() {
     sprite.setPosition(rect.getPosition());
-    if(hp>=maxHP){
-        hp=maxHP;
-    }
+    if(getHP()>=maxHP)
+        setHP(maxHP);
 }
 
 void GameCharacter::updateMovement(Direction direction1){
         if(direction1==Direction::up){
             if(canMoveUp==true) {
                 rect.move(0, -movementSpeed);
-                tileY+=1/7;
                 if(gameCharacter==GCharacters::girl)
                     sprite.setTextureRect(sf::IntRect(counterWalking * 24, 0, 24, 32));
                 else
                     sprite.setTextureRect(sf::IntRect(counterWalking*24, 32*4, 24, 32));
 
-                direction = Direction::up;
+                setDirection(Direction::up);
 
                 canMoveUp = true;
                 canMoveDown = true;
@@ -54,13 +52,12 @@ void GameCharacter::updateMovement(Direction direction1){
         else if(direction1==Direction::down){
             if(canMoveDown==true){
                 rect.move(0, movementSpeed);
-                tileY-=1/7;
                 if(gameCharacter==GCharacters::girl)
                     sprite.setTextureRect(sf::IntRect(counterWalking * 24, 32 * 2, 24, 32));
                 else
                     sprite.setTextureRect(sf::IntRect(counterWalking*24, 32*6, 24, 32));
 
-                direction = Direction::down;
+                setDirection(Direction::down);
 
                 canMoveUp = true;
                 canMoveDown = true;
@@ -72,13 +69,12 @@ void GameCharacter::updateMovement(Direction direction1){
         else if(direction1==Direction::left){
             if(canMoveLeft==true) {
                 rect.move(-movementSpeed, 0);
-                tileX-=1;
                 if(gameCharacter==GCharacters::girl)
                     sprite.setTextureRect(sf::IntRect(counterWalking * 24, 32 * 3, 24, 32));
                 else
                     sprite.setTextureRect(sf::IntRect(counterWalking*24, 32*7, 24, 32));
 
-                direction = Direction::left;
+                setDirection(Direction::left);
 
                 canMoveUp = true;
                 canMoveDown = true;
@@ -90,13 +86,12 @@ void GameCharacter::updateMovement(Direction direction1){
         else if(direction1==Direction::right){
             if(canMoveRight==true) {
                 rect.move(movementSpeed, 0);
-                tileX+=1;
                 if(gameCharacter==GCharacters::girl)
                     sprite.setTextureRect(sf::IntRect(counterWalking * 24, 32, 24, 32));
                 else
                     sprite.setTextureRect(sf::IntRect(counterWalking*24, 32*5, 24, 32));
 
-                direction = Direction::right;
+                setDirection(Direction::right);
 
                 canMoveUp = true;
                 canMoveDown = true;
@@ -113,16 +108,16 @@ void GameCharacter::updateMovement(Direction direction1){
 }
 
 void GameCharacter::hitWall() {
-    if (direction == Direction::up) {
+    if (getDirection() == Direction::up) {
         canMoveUp = false;
         rect.move(0, movementSpeed);
-    } else if (direction == Direction::down) {
+    } else if (getDirection() == Direction::down) {
         canMoveDown = false;
         rect.move(0, -movementSpeed);
-    } else if (direction == Direction::left) {
+    } else if (getDirection() == Direction::left) {
         canMoveLeft = false;
         rect.move(movementSpeed, 0);
-    } else if (direction == Direction::right) {
+    } else if (getDirection() == Direction::right) {
         canMoveRight = false;
         rect.move(-movementSpeed, 0);
     } else {}
@@ -140,14 +135,6 @@ void GameCharacter::setmaxHP(int maxHP) {
 
 int GameCharacter::getmaxHP() const {
     return maxHP;
-}
-
-void GameCharacter::setHP(int hp) {
-    this->hp=hp;
-    if(this->hp<0)
-        this->hp=0;
-    if(this->hp>maxHP)
-        this->hp=maxHP;
 }
 
 void GameCharacter::heal(int hp){

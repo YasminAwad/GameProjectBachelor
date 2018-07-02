@@ -238,7 +238,7 @@ again:
                     choiceWindow = true;
 
             } else {
-                if (player.hp <= 0) {
+                if (player.getHP() <= 0) {
                     sound.music.stop();
                     view1.setCenter(0, 0);
                     window.setView(view1);
@@ -252,7 +252,7 @@ again:
                     if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace)) {
                         goto again;
                     }
-                } else if (boss.hp <= 0) {
+                } else if (boss.getHP() <= 0) {
                     sound.music.stop();
                     view1.setCenter(0, 0);
                     window.setView(view1);
@@ -331,50 +331,50 @@ again:
                             //PowerUp Attack
                             if (player.powerUpLevel == true) {
                                 projectile1.rect.setPosition(player.rect.getPosition().x, player.rect.getPosition().y);
-                                projectile1.direction = player.direction;
+                                projectile1.setDirection(player.getDirection());
                                 projectileArray.push_back(projectile1);
 
                                 projectile1.rect.setPosition(player.rect.getPosition().x + Random::generateRandom(50),
                                                              player.rect.getPosition().y + Random::generateRandom(50));
-                                projectile1.direction = player.direction;
+                                projectile1.setDirection(player.getDirection());
                                 projectileArray.push_back(projectile1);
 
                                 projectile1.rect.setPosition(player.rect.getPosition().x + Random::generateRandom(50),
                                                              player.rect.getPosition().y + Random::generateRandom(50));
-                                projectile1.direction = player.direction;
+                                projectile1.setDirection(player.getDirection());
                                 projectileArray.push_back(projectile1);
                             } else if (player.novaAttack == true) {
                                 projectile1.rect.setPosition(player.rect.getPosition().x + player.rect.getSize().x / 2 -
                                                              projectile1.rect.getSize().x / 2,
                                                              player.rect.getPosition().y + player.rect.getSize().y / 2 -
                                                              projectile1.rect.getSize().y / 2);
-                                projectile1.direction = Direction::up;
+                                projectile1.setDirection(Direction::up);
                                 projectileArray.push_back(projectile1);
 
                                 projectile1.rect.setPosition(player.rect.getPosition().x + player.rect.getSize().x / 2 -
                                                              projectile1.rect.getSize().x / 2,
                                                              player.rect.getPosition().y + player.rect.getSize().y / 2 -
                                                              projectile1.rect.getSize().y / 2);
-                                projectile1.direction = Direction::down;
+                                projectile1.setDirection(Direction::down);
                                 projectileArray.push_back(projectile1);
 
                                 projectile1.rect.setPosition(player.rect.getPosition().x + player.rect.getSize().x / 2 -
                                                              projectile1.rect.getSize().x / 2,
                                                              player.rect.getPosition().y + player.rect.getSize().y / 2 -
                                                              projectile1.rect.getSize().y / 2);
-                                projectile1.direction = Direction::left;
+                                projectile1.setDirection(Direction::left);
                                 projectileArray.push_back(projectile1);
 
                                 projectile1.rect.setPosition(player.rect.getPosition().x + player.rect.getSize().x / 2 -
                                                              projectile1.rect.getSize().x / 2,
                                                              player.rect.getPosition().y + player.rect.getSize().y / 2 -
                                                              projectile1.rect.getSize().y / 2);
-                                projectile1.direction = Direction::right;
+                                projectile1.setDirection(Direction::right);
                                 projectileArray.push_back(projectile1);
                             } else {
                                 //Normal Attack
                                 projectile1.rect.setPosition(player.rect.getPosition().x, player.rect.getPosition().y);
-                                projectile1.direction = player.direction;
+                                projectile1.setDirection(player.getDirection());
                                 projectileArray.push_back(projectile1);
                             }
                         }
@@ -388,20 +388,20 @@ again:
                             projectileArray[counter].destroy = true;
                             sound.soundCollision.play();
                             //Text Display
-                            textdisplay1.text.setString(to_string(projectileArray[counter].attackDamage));
+                            textdisplay1.text.setString(to_string(projectileArray[counter].getAttackDamage()));
                             textdisplay1.text.setPosition(boss.rect.getPosition().x + boss.rect.getSize().x / 2,
                                                           boss.rect.getPosition().y - boss.rect.getSize().y / 2);
                             textdisplayArray.push_back(textdisplay1);
-                            boss.hp -= projectileArray[counter].attackDamage;
+                            boss.setHP(boss.getHP() - projectileArray[counter].getAttackDamage());
 
                             boss.setAggroed(true);
 
-                            if (boss.hp < 50) {
+                            if (boss.getHP() < 50) {
                                 boss.setFlee();
                                 boss.setMovementSpeed(3);
                             }
 
-                            if (boss.hp <= 0)
+                            if (boss.getHP() <= 0)
                                 boss.alive = false;
                         }
                         for (iter4 = monsterArray.begin(); iter4 != monsterArray.end(); iter4++) {
@@ -412,17 +412,17 @@ again:
                                 sound.soundCollision.play();
 
                                 //Text Display
-                                textdisplay1.text.setString(to_string(projectileArray[counter].attackDamage));
+                                textdisplay1.text.setString(to_string(projectileArray[counter].getAttackDamage()));
                                 textdisplay1.text.setPosition(monsterArray[counter2].rect.getPosition().x +
                                                               monsterArray[counter2].rect.getSize().x / 2,
                                                               monsterArray[counter2].rect.getPosition().y -
                                                               monsterArray[counter2].rect.getSize().y / 2);
                                 textdisplayArray.push_back(textdisplay1);
 
-                                monsterArray[counter2].hp -= projectileArray[counter].attackDamage;
+                                monsterArray[counter2].setHP(monsterArray[counter2].getHP() - projectileArray[counter].getAttackDamage());
 
                                 monsterArray[counter2].setFlee();
-                                if (monsterArray[counter2].hp <= 0)
+                                if (monsterArray[counter2].getHP() <= 0)
                                     monsterArray[counter2].alive = false;
                             }
                             counter2++;
@@ -481,11 +481,11 @@ again:
                         if (player.rect.getGlobalBounds().intersects(boss.rect.getGlobalBounds())) {
                             sound.soundPDamage.play();
                             //Text Display
-                            textdisplay1.text.setString(to_string(boss.attackDamage));
+                            textdisplay1.text.setString(to_string(boss.getDamage()));
                             textdisplay1.text.setPosition(player.rect.getPosition().x + player.rect.getSize().x / 2,
                                                           player.rect.getPosition().y - player.rect.getSize().y / 2);
                             textdisplayArray.push_back(textdisplay1);
-                            player.hp -= boss.attackDamage;
+                            player.setHP(player.getHP() -  boss.getDamage());
                             player.powerUpLevel = false;
                             player.novaAttack = false;
                         }
@@ -494,12 +494,12 @@ again:
                                     monsterArray[counter].rect.getGlobalBounds())) {
                                 sound.soundPDamage.play();
                                 //Text Display
-                                textdisplay1.text.setString(to_string(monsterArray[counter].attackDamage));
+                                textdisplay1.text.setString(to_string(monsterArray[counter].getDamage()));
                                 textdisplay1.text.setPosition(player.rect.getPosition().x + player.rect.getSize().x / 2,
                                                               player.rect.getPosition().y -
                                                               player.rect.getSize().y / 2);
                                 textdisplayArray.push_back(textdisplay1);
-                                player.hp -= monsterArray[counter].attackDamage;
+                                player.setHP(player.getHP() - monsterArray[counter].getDamage());
                                 player.powerUpLevel = false;
                                 player.novaAttack = false;
                             }
@@ -521,7 +521,7 @@ again:
                                     player.wallet -= pickupArray[counter].cost;
                                     if (pickupArray[counter].isKey == true) {
                                         sound.soundCoin.play();
-                                        player.key = true;
+                                        //player.key = true;
                                         door1.open = true;
                                         door2.open = true;
                                         door3.open = true;
@@ -543,7 +543,7 @@ again:
                             }
                             if (pickupArray[counter].isFood == true) {
                                 sound.soundCoin.play();
-                                player.hp += pickupArray[counter].foodValue;
+                                player.heal(pickupArray[counter].foodValue);
                                 pickupArray[counter].destroy = true;
                             }
                         }
@@ -666,7 +666,7 @@ again:
                     }
 
                     //Draw Player HP Text
-                    textHP.setString("HP:" + to_string(player.hp) + "/" + to_string(player.maxHP));
+                    textHP.setString("HP:" + to_string(player.getHP()) + "/" + to_string(player.getmaxHP()));
                     textHP.setPosition(player.rect.getPosition().x - window.getSize().x / 2+10,
                                        player.rect.getPosition().y - window.getSize().y / 2+10);
                     window.draw(textHP);

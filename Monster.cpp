@@ -21,14 +21,7 @@ Monster::Monster(int posx, int posy, int damage, int hp,  Monsters monsterClass)
     }
 }
 
-Monster::Monster() {
-   /* hp=3;
-    rect.setSize(sf::Vector2f(32,32));
-    rect.setPosition(Random::generateRandom(1000), Random::generateRandom(1000));
-
-    sprite.setTexture(texture);
-    sprite.setTextureRect(sf::IntRect(0,0,32,32));*/
-}
+Monster::Monster() {}
 
 int Monster::loadTexture() {
     if(monsterClass==Monsters::boss) {
@@ -63,7 +56,7 @@ void Monster::updateMovement(GameCharacter* player) {
     behavior->movementBehavior(player, this);
 
     //move in that direction
-    if (direction == Direction::up) {
+    if (getDirection() == Direction::up) {
         if (canMoveUp == true) {
             rect.move(0, -movementSpeed);
             switch(monsterClass){
@@ -78,7 +71,7 @@ void Monster::updateMovement(GameCharacter* player) {
             updatePosition();
         }
     }
-    else if (direction == Direction::down) {
+    else if (getDirection() == Direction::down) {
         if (canMoveDown == true) {
             rect.move(0, movementSpeed);
             switch(monsterClass){
@@ -93,7 +86,7 @@ void Monster::updateMovement(GameCharacter* player) {
            updatePosition();
         }
     }
-    else if (direction == Direction::left) {
+    else if (getDirection() == Direction::left) {
         if (canMoveLeft == true) {
             rect.move(-movementSpeed, 0);
             switch(monsterClass){
@@ -108,7 +101,7 @@ void Monster::updateMovement(GameCharacter* player) {
             updatePosition();
         }
     }
-    else if (direction == Direction::right) {
+    else if (getDirection() == Direction::right) {
         if (canMoveRight == true) {
             rect.move(movementSpeed, 0);
             switch (monsterClass) {
@@ -131,16 +124,16 @@ void Monster::updateMovement(GameCharacter* player) {
 }
 
 void Monster::monsterWall() {
-    if (direction == Direction::up) {
+    if (getDirection() == Direction::up) {
         canMoveUp = false;
         rect.move(0, movementSpeed);
-    } else if (direction == Direction::down) {
+    } else if (getDirection() == Direction::down) {
         canMoveDown = false;
         rect.move(0, -movementSpeed);
-    } else if (direction == Direction::left) {
+    } else if (getDirection() == Direction::left) {
         canMoveLeft = false;
         rect.move(movementSpeed, 0);
-    } else if (direction == Direction::right) {
+    } else if (getDirection() == Direction::right) {
         canMoveRight = false;
         rect.move(-movementSpeed, 0);
     } else {}
@@ -154,7 +147,7 @@ void Monster::setAggroed(bool aggroed){
 }
 
 void Monster::setFlee() {
-    if(hp < 10);
+    if(getHP() < 10);
         setStrategy(new Flee());
 }
 

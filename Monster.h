@@ -17,9 +17,7 @@ class Monster: public Character {
 public:
     Monsters monsterClass;
     int movementSpeed=1;
-    int attackDamage=5;
     int counterWalking=1;
-    Direction direction;
     int counter=0;
     int movementLenght=200;
     bool alive=true;

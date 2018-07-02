@@ -52,3 +52,19 @@ void Projectile::update(){
 
     sprite.setPosition(rect.getPosition());
 }
+
+int Projectile::getAttackDamage(){
+    return attackDamage;
+}
+
+void Projectile::setAttackDamage(int attackDamage) {
+    this->attackDamage=attackDamage;
+}
+
+Direction Projectile::getDirection() {
+    return direction;
+}
+
+void Projectile::setDirection(Direction direction) {
+    this->direction=direction;
+}

@@ -5,44 +5,44 @@
 #include "Strategy.h"
 
 void ChaseHero::movementBehavior(GameCharacter* player, Monster* monster) {
-    if(monster->walkingTime.getElapsedTime().asSeconds() > 0.3) { //FIXME: dove lo incremento? vedi monster update movement
+    if(monster->walkingTime.getElapsedTime().asSeconds() > 0.3) {
         float Ydiff = player->rect.getPosition().y - monster->rect.getPosition().y;
         float Xdiff = player->rect.getPosition().x - monster->rect.getPosition().x;
 
         if (abs(static_cast<int>(Ydiff)) < Xdiff && Xdiff > 0) {
-            monster->direction = Direction ::right;
+            monster->setDirection(Direction ::right);
             if (!monster->canMoveRight) { //se non puoi muovere a dx (ostacolo), vai up, sennò down
                 if (monster->canMoveUp)
-                    monster->direction = Direction ::up;
+                    monster->setDirection(Direction ::up);
                 else if (monster->canMoveDown)
-                    monster->direction = Direction ::down;
+                    monster->setDirection(Direction ::down);
             }
         }
         if (abs(static_cast<int>(Xdiff)) < Ydiff && Ydiff > 0) {
-            monster->direction = Direction ::down;
+            monster->setDirection(Direction ::down);
             if (!monster->canMoveDown) {
                 if (monster->canMoveRight)
-                    monster->direction = Direction ::right;
+                    monster->setDirection(Direction ::right);
                 else if (monster->canMoveLeft)
-                    monster->direction = Direction ::left;
+                    monster->setDirection(Direction ::left);
             }
         }
         if (abs(static_cast<int>(Ydiff)) < abs(static_cast<int>(Xdiff)) && Xdiff < 0) {
-            monster->direction = Direction ::left;
+            monster->setDirection(Direction ::left);
             if (!monster->canMoveLeft) {
                 if (monster->canMoveDown)
-                    monster->direction = Direction ::down;
+                    monster->setDirection(Direction ::down);
                 else if (monster->canMoveUp)
-                    monster->direction = Direction ::up;
+                    monster->setDirection(Direction ::up);
             }
         }
         if (abs(static_cast<int>(Xdiff)) < abs(static_cast<int>(Ydiff)) && Ydiff < 0) {
-            monster->direction = Direction ::up;
+            monster->setDirection(Direction ::up);
             if (!monster->canMoveUp) {
                 if (monster->canMoveRight)
-                    monster->direction = Direction ::right;
+                    monster->setDirection(Direction ::right);
                 else if (monster->canMoveLeft)
-                    monster->direction = Direction ::left;
+                    monster->setDirection(Direction ::left);
             }
         }
     }
@@ -60,19 +60,19 @@ void TurnAround::movementBehavior(GameCharacter* player, Monster* monster) {
             int myRandom = Random::generateRandom(5);
             switch(myRandom){
                 case 1:
-                    monster->direction = Direction::up;
+                    monster->setDirection(Direction ::up);
                     break;
                 case 2:
-                    monster->direction = Direction::down;
+                    monster->setDirection(Direction ::down);
                     break;
                 case 3:
-                    monster->direction = Direction::left;
+                    monster->setDirection(Direction ::left);
                     break;
                 case 4:
-                    monster->direction = Direction::right;
+                    monster->setDirection(Direction ::right);
                     break;
                 case 5:
-                    monster->direction = Direction::null;
+                    monster->setDirection(Direction::null);
                     break;
 
             }
@@ -95,39 +95,39 @@ void Flee::movementBehavior(GameCharacter* player, Monster* monster) {
         float Xdiff = player->rect.getPosition().x - monster->rect.getPosition().x;
 
         if (abs(static_cast<int>(Ydiff)) < Xdiff && Xdiff > 0) {
-            monster->direction= Direction ::left;
+            monster->setDirection(Direction ::left);
             if (!monster->canMoveLeft) {
                 if (monster->canMoveUp)
-                    monster->direction = Direction ::up;
+                    monster->setDirection(Direction ::up);
                 else if (monster->canMoveDown)
-                    monster->direction = Direction ::down;
+                    monster->setDirection(Direction ::down);
             }
         }
         if (abs(static_cast<int>(Xdiff)) < Ydiff && Ydiff > 0) {
-            monster->direction = Direction ::up;
+            monster->setDirection(Direction ::up);
             if (!monster->canMoveUp) {
                 if (monster->canMoveRight)
-                    monster->direction = Direction ::right;
+                    monster->setDirection(Direction ::right);
                 else if (monster->canMoveLeft)
-                    monster->direction = Direction ::left;
+                    monster->setDirection(Direction ::left);
             }
         }
         if (abs(static_cast<int>(Ydiff)) < abs(static_cast<int>(Xdiff)) && Xdiff < 0) {
-            monster->direction = Direction ::right;
+            monster->setDirection(Direction ::right);
             if (!monster->canMoveRight) {
                 if (monster->canMoveDown)
-                    monster->direction = Direction ::down;
+                    monster->setDirection(Direction ::down);
                 else if (monster->canMoveUp)
-                    monster->direction = Direction ::up;
+                    monster->setDirection(Direction ::up);
             }
         }
         if (abs(static_cast<int>(Xdiff)) < abs(static_cast<int>(Ydiff)) && Ydiff < 0) {
-            monster->direction = Direction ::down;
+            monster->setDirection(Direction ::down);
             if (!monster->canMoveDown) {
                 if (monster->canMoveRight)
-                    monster->direction = Direction ::right;
+                    monster->setDirection(Direction ::right);
                 else if (monster->canMoveLeft)
-                    monster->direction = Direction ::left;
+                    monster->setDirection(Direction ::left);
             }
         }
     }

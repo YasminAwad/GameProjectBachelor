@@ -12,8 +12,6 @@
 class Projectile: public Entity {
 public:
     int movementSpeed=10;
-    int attackDamage=30;
-    Direction direction;
     bool destroy=false;
     int counterLifetime=0;
     int lifeTime=50;
@@ -24,7 +22,16 @@ public:
 
     void update();
     int loadTexture();
-    void PowerUp();
+   // void PowerUp();
+
+    int getAttackDamage();
+    void setAttackDamage(int attackDamage);
+    Direction getDirection();
+    void setDirection(Direction direction);
+
+private:
+    int attackDamage=30;
+    Direction direction;
 };
 
 

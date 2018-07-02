@@ -10,8 +10,8 @@ TEST(Monster, Monster_Test) {
 
     ASSERT_EQ(monster.rect.getPosition().x, 0);
     ASSERT_EQ(monster.rect.getPosition().y, 0);
-    ASSERT_EQ(monster.damage, 5);
-    ASSERT_EQ(monster.hp, 30);
+    ASSERT_EQ(monster.getDamage(), 5);
+    ASSERT_EQ(monster.getHP(), 30);
     ASSERT_EQ(monster.monsterClass, Monsters::bat);
 
 }
@@ -29,7 +29,7 @@ TEST(Monster, Monster_Setting_Test) {
     ASSERT_TRUE(monster.canMoveRight);
     ASSERT_TRUE(monster.canMoveLeft);
 
-    monster.direction=Direction::up;
+    monster.setDirection(Direction::up);
     monster.monsterWall();
     ASSERT_FALSE(monster.canMoveUp);
 

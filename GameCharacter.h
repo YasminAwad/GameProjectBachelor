@@ -14,17 +14,13 @@ using std::string;
 class GameCharacter : public Character {
 public:
 
-    float tileX=24;
-    float tileY=48;
-    int maxHP=50;
-    Direction direction;
     float movementSpeed=6;
     int counterWalking=0;
     GCharacters gameCharacter;
     int wallet=0;
     bool powerUpLevel=false;
     bool novaAttack=false;
-    bool key=false;
+    //bool key=false;
 
     void update();
     void updateMovement(Direction direction1);
@@ -32,13 +28,15 @@ public:
     void hitWall();
     int getmaxHP() const;
     void setmaxHP(int maxHP);
-    void setHP(int hp);
     void heal(int hp);
 
 
     GameCharacter(int posx, int posy, int damage, int hp, int maxHP, GCharacters gameCharacter);
     GameCharacter(){}
     virtual ~GameCharacter(){}
+
+private:
+    int maxHP=50;
 
 };
 

@@ -9,9 +9,9 @@ TEST(GameCharacter, GameCharacter_Test) {
 
     ASSERT_EQ(character.rect.getPosition().x, 0);
     ASSERT_EQ(character.rect.getPosition().y, 0);
-    ASSERT_EQ(character.damage, 5);
-    ASSERT_EQ(character.hp, 50);
-    ASSERT_EQ(character.maxHP, 50);
+    ASSERT_EQ(character.getDamage(), 5);
+    ASSERT_EQ(character.getHP(), 50);
+    ASSERT_EQ(character.getmaxHP(), 50);
     ASSERT_EQ(character.gameCharacter, GCharacters::boy);
 }
 
