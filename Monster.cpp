@@ -19,6 +19,7 @@ Monster::Monster(int posx, int posy, int damage, int hp,  Monsters monsterClass)
             sprite.setTextureRect(sf::IntRect(0,4*32,32,32));
             break;
     }
+    loadTexture();
 }
 
 Monster::Monster() {}

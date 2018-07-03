@@ -12,6 +12,7 @@
 #include "Map.h"
 #include "MapObjects.h"
 #include "LoadDisplay.h"
+#include "MonsterFactory.h"
 
 using namespace std;
 
@@ -53,6 +54,7 @@ again:
     sound.music.play();
     sound.music.setLoop(true);
     sound.soundCoin.setVolume(100);
+    sound.soundShot.setVolume(30);
 
     //Create a graphical text to display
     sf::Font font;
@@ -92,29 +94,8 @@ again:
     projectile1.loadTexture();
 
     //Monster Vector Array
-    vector<Monster>::const_iterator iter4;
-    vector<Monster> monsterArray;
-    Monster monster1(100,1300, 5, 35, Monsters::bat);
-    Monster monster2(1300, 1300, 5, 35, Monsters::rat);
-    monster1.loadTexture();
-    monster2.loadTexture();
-
-    //MonsterFactory
-    for(int size=1; size<6; size++){
-        monsterArray.push_back(monster1);
-        monsterArray.push_back(monster2);
-    }
-
-    monsterArray[0].rect.setPosition(100, 100);
-    monsterArray[1].rect.setPosition(200,400);
-    monsterArray[2].rect.setPosition(1300,200);
-    monsterArray[3].rect.setPosition(1400,500);
-    monsterArray[4].rect.setPosition(300,1100);
-    monsterArray[5].rect.setPosition(500,1200);
-    monsterArray[6].rect.setPosition(1200,1000);
-    monsterArray[7].rect.setPosition(1000,1100);
-    monsterArray[8].rect.setPosition(100, 1300);
-    monsterArray[9].rect.setPosition(1300, 1300);
+    vector<Monster*>::const_iterator iter4;
+    std::vector<Monster*> monsterArray=MonsterFactory::MonsterArrayGenerator(6, 35, 5);
 
     //Monster Boss
     Monster boss(window.getPosition().x / 2 + 540, window.getPosition().y / 2 + 100, 20, 200, Monsters::boss);
@@ -406,24 +387,24 @@ again:
                         }
                         for (iter4 = monsterArray.begin(); iter4 != monsterArray.end(); iter4++) {
                             if (projectileArray[counter].rect.getGlobalBounds().intersects(
-                                    monsterArray[counter2].rect.getGlobalBounds())) {
+                                    monsterArray[counter2]->rect.getGlobalBounds())) {
                                 projectileArray[counter].destroy = true;
 
                                 sound.soundCollision.play();
 
                                 //Text Display
                                 textdisplay1.text.setString(to_string(projectileArray[counter].getAttackDamage()));
-                                textdisplay1.text.setPosition(monsterArray[counter2].rect.getPosition().x +
-                                                              monsterArray[counter2].rect.getSize().x / 2,
-                                                              monsterArray[counter2].rect.getPosition().y -
-                                                              monsterArray[counter2].rect.getSize().y / 2);
+                                textdisplay1.text.setPosition(monsterArray[counter2]->rect.getPosition().x +
+                                                              monsterArray[counter2]->rect.getSize().x / 2,
+                                                              monsterArray[counter2]->rect.getPosition().y -
+                                                              monsterArray[counter2]->rect.getSize().y / 2);
                                 textdisplayArray.push_back(textdisplay1);
 
-                                monsterArray[counter2].setHP(monsterArray[counter2].getHP() - projectileArray[counter].getAttackDamage());
+                                monsterArray[counter2]->setHP(monsterArray[counter2]->getHP() - projectileArray[counter].getAttackDamage());
 
-                                monsterArray[counter2].setFlee();
-                                if (monsterArray[counter2].getHP() <= 0)
-                                    monsterArray[counter2].alive = false;
+                                monsterArray[counter2]->setFlee();
+                                if (monsterArray[counter2]->getHP() <= 0)
+                                    monsterArray[counter2]->alive = false;
                             }
                             counter2++;
                         }
@@ -452,10 +433,10 @@ again:
                     for (iter4 = monsterArray.begin(); iter4 != monsterArray.end(); iter4++) {
                         counter2 = 0;
                         for (wall.iter = wall.wallBuffer.begin(); wall.iter != wall.wallBuffer.end(); wall.iter++) {
-                            if (monsterArray[counter].rect.getGlobalBounds().intersects(
+                            if (monsterArray[counter]->rect.getGlobalBounds().intersects(
                                     wall.wallBuffer[counter2]->rect.getGlobalBounds())) {
                                 if (wall.wallBuffer[counter2]->isWalkable == false) {
-                                    monsterArray[counter].monsterWall();
+                                    monsterArray[counter]->monsterWall();
                                 }
                             }
                             counter2++;
@@ -491,15 +472,15 @@ again:
                         }
                         for (iter4 = monsterArray.begin(); iter4 != monsterArray.end(); iter4++) {
                             if (player.rect.getGlobalBounds().intersects(
-                                    monsterArray[counter].rect.getGlobalBounds())) {
+                                    monsterArray[counter]->rect.getGlobalBounds())) {
                                 sound.soundPDamage.play();
                                 //Text Display
-                                textdisplay1.text.setString(to_string(monsterArray[counter].getDamage()));
+                                textdisplay1.text.setString(to_string(monsterArray[counter]->getDamage()));
                                 textdisplay1.text.setPosition(player.rect.getPosition().x + player.rect.getSize().x / 2,
                                                               player.rect.getPosition().y -
                                                               player.rect.getSize().y / 2);
                                 textdisplayArray.push_back(textdisplay1);
-                                player.setHP(player.getHP() - monsterArray[counter].getDamage());
+                                player.setHP(player.getHP() - monsterArray[counter]->getDamage());
                                 player.powerUpLevel = false;
                                 player.novaAttack = false;
                             }
@@ -555,11 +536,11 @@ again:
                     monsterRandom = Random::generateRandom(2);
                     for (iter4 = monsterArray.begin(); iter4 != monsterArray.end(); iter4++) {
                         myRandom = Random::generateRandom(4);
-                        if (monsterArray[counter].alive == false) {
+                        if (monsterArray[counter]->alive == false) {
                             if (monsterRandom == 1)
-                                monsterArray.push_back(monster1);
+                                monsterArray.push_back(new Monster(100,1300, 5, 35, Monsters::bat));
                             if (monsterRandom == 2)
-                                monsterArray.push_back(monster2);
+                                monsterArray.push_back(new Monster(1300, 1300, 5, 35, Monsters::rat));
 
                             switch(myRandom){
                                 case 1: //Drop Coin
@@ -633,9 +614,9 @@ again:
                     //Draw Monster
                     counter = 0;
                     for (iter4 = monsterArray.begin(); iter4 != monsterArray.end(); iter4++) {
-                        monsterArray[counter].updateMovement(&player);
-                        monsterArray[counter].update();
-                        window.draw(monsterArray[counter].sprite);
+                        monsterArray[counter]->updateMovement(&player);
+                        monsterArray[counter]->update();
+                        window.draw(monsterArray[counter]->sprite);
                         counter++;
                     }
                     boss.updateMovement(&player);
