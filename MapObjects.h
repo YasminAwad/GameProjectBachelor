@@ -12,7 +12,7 @@
 
 class MapObjects:public Entity {
 public:
-    MapObjects(TileEnum object);
+
     sf::Texture texture;
     TileEnum object;
 
@@ -22,6 +22,7 @@ public:
     int loadTexture();
     void update(GameCharacter *player);
 
+    MapObjects(TileEnum object);
     virtual ~MapObjects(){}
 
 };

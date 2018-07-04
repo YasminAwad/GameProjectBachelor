@@ -23,6 +23,7 @@ TEST(GameCharacter,GameCharacter_Setting_Test) {
     character->setDamage(35);
 
     ASSERT_EQ(200, character->getHP());
+    ASSERT_EQ(200, character->getmaxHP());
     ASSERT_EQ(35, character->getDamage());
 
 }
@@ -44,3 +45,12 @@ TEST(GameCharacter, GameCharacter_heal_test){
     ASSERT_EQ(100,character->getmaxHP());
     delete character;
 }
+
+TEST(GameCharacter, GameCharacter_hitWall_test) {
+    GameCharacter *character = new GameCharacter(0, 0, 10, 20, 100, GCharacters::boy);
+    character->setDirection(Direction::up);
+    ASSERT_TRUE(character->canMoveUp);
+    character->hitWall();
+    ASSERT_FALSE(character->canMoveUp);
+}
+    

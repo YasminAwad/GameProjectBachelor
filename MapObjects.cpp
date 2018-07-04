@@ -38,7 +38,7 @@ void MapObjects::update(GameCharacter *player){
         if (player->rect.getGlobalBounds().intersects(rect.getGlobalBounds()))
             player->hitWall();
     }
-    if(player->rect.getGlobalBounds().intersects(rect.getGlobalBounds()) & open==true){
+    if(player->rect.getGlobalBounds().intersects(rect.getGlobalBounds()) && open==true){
         isOpen=true;
     }
 }

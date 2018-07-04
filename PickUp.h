@@ -26,10 +26,10 @@ public:
     virtual ~PickUp(){}
     void update();
     int loadTexture();
-    void dropCoin(std::vector<Monster*> monsterArray, int counter);
-    void dropFood(std::vector<Monster*> monsterArray, int counter);
-    void dropPowerUp(std::vector<Monster*> monsterArray, int counter);
-    void dropNovaAttack(std::vector<Monster*> monsterArray, int counter);
+    void dropCoin(std::vector<Monster> monsterArray, int counter);
+    void dropFood(std::vector<Monster> monsterArray, int counter);
+    void dropPowerUp(std::vector<Monster> monsterArray, int counter);
+    void dropNovaAttack(std::vector<Monster> monsterArray, int counter);
 
 };
 

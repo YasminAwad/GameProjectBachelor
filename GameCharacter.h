@@ -20,7 +20,6 @@ public:
     int wallet=0;
     bool powerUpLevel=false;
     bool novaAttack=false;
-    //bool key=false;
 
     void update();
     void updateMovement(Direction direction1);

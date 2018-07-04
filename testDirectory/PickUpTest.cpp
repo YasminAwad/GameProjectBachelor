@@ -8,8 +8,8 @@
 
 TEST(PickUp, PickUP_Setting_Test) {
     PickUp pickUp;
+    Monster monster1 (0,0, 5, 35, Monsters::bat);
     std::vector<Monster> monsterArray;
-    Monster monster1(0,0, 5, 35, Monsters::bat);
     monsterArray.push_back(monster1);
 
     ASSERT_FALSE(pickUp.isCoin);
@@ -41,7 +41,7 @@ TEST(PickUp, PickUP_Setting_Test) {
     ASSERT_FALSE(pickUp.isFood);
     ASSERT_FALSE(pickUp.isPowerUp);
 
-    ASSERT_EQ(pickUp.rect.getPosition().x,monster1.rect.getPosition().x);
-    ASSERT_EQ(pickUp.rect.getPosition().y,monster1.rect.getPosition().y);
+    ASSERT_EQ(pickUp.rect.getPosition().x,monsterArray[0].rect.getPosition().x);
+    ASSERT_EQ(pickUp.rect.getPosition().y,monsterArray[0].rect.getPosition().y);
 
 }

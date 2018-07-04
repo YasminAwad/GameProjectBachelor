@@ -37,9 +37,4 @@ TEST(Monster, Monster_Setting_Test) {
     monster.setAggroed(true);
     ASSERT_TRUE(monster.getAggroed());
 
-
-
-
-
-
 }

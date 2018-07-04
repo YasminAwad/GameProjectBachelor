@@ -22,6 +22,8 @@ public:
     int movementLenght=200;
     bool alive=true;
     sf::Clock walkingTime;
+    sf::Texture textureMonsters;
+    sf::Texture textureBoss;
 
     Monster(int posx, int posy, int damage, int hp,  Monsters monsterClass);
     Monster();

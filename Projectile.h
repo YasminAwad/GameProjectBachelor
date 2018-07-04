@@ -22,8 +22,6 @@ public:
 
     void update();
     int loadTexture();
-   // void PowerUp();
-
     int getAttackDamage();
     void setAttackDamage(int attackDamage);
     Direction getDirection();
